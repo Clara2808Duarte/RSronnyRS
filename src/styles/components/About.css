@@ -1,0 +1,121 @@
+.about {
+  padding: 10vh 5vw;
+  background: linear-gradient(180deg, #000000 0%, #18181b 100%);
+}
+
+.about-container {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.about-header {
+  text-align: center;
+  margin-bottom: 8vh;
+}
+
+.about-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 10vw;
+  height: 10vw;
+  min-width: 60px;
+  min-height: 60px;
+  max-width: 80px;
+  max-height: 80px;
+  background-color: rgba(212, 175, 55, 0.1);
+  border-radius: 50%;
+  margin-bottom: 3vh;
+}
+
+.about-title {
+  font-size: clamp(2rem, 7vw, 3rem);
+  color: white;
+  margin-bottom: 2vh;
+  line-height: 1.2;
+}
+
+.about-title-gold {
+  color: #d4af37;
+}
+
+.about-description {
+  font-size: clamp(1rem, 3vw, 1.25rem);
+  color: #9ca3af;
+  max-width: 700px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 4vh;
+}
+
+.about-card {
+  background-color: #18181b;
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  padding: 5vh 5vw;
+  transition: all 0.3s ease;
+}
+
+.about-card:hover {
+  border-color: #d4af37;
+  transform: translateY(-1vh);
+  box-shadow: 0 10px 30px rgba(212, 175, 55, 0.2);
+}
+
+.about-card-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 8vw;
+  height: 8vw;
+  min-width: 50px;
+  min-height: 50px;
+  max-width: 70px;
+  max-height: 70px;
+  background-color: rgba(212, 175, 55, 0.1);
+  border-radius: 50%;
+  margin-bottom: 3vh;
+}
+
+.about-card-title {
+  font-size: clamp(1.25rem, 4vw, 1.5rem);
+  color: white;
+  margin-bottom: 2vh;
+}
+
+.about-card-description {
+  font-size: clamp(0.9rem, 2.5vw, 1rem);
+  color: #9ca3af;
+  line-height: 1.6;
+}
+
+/* Tablet */
+@media (min-width: 768px) {
+  .about {
+    padding: 12vh 5vw;
+  }
+
+  .about-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 3vw;
+  }
+}
+
+/* Desktop */
+@media (min-width: 1024px) {
+  .about {
+    padding: 15vh 4vw;
+  }
+
+  .about-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .about-card {
+    padding: 4vh 3vw;
+  }
+}

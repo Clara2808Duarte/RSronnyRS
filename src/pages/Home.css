@@ -1,0 +1,224 @@
+.home {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  padding-top: 80px;
+}
+
+.home__bg {
+  position: absolute;
+  inset: 0;
+}
+
+.home__bg-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(0.22) saturate(0.5);
+}
+
+.home__bg-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(30, 34, 40, 0.92) 0%,
+    rgba(30, 34, 40, 0.75) 50%,
+    rgba(30, 34, 40, 0.88) 100%
+  );
+}
+
+.home__bg-grain {
+  position: absolute;
+  inset: 0;
+  opacity: 0.03;
+  background-image: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(201, 160, 48, 0.4) 2px,
+    rgba(201, 160, 48, 0.4) 4px
+  );
+}
+
+.home__content {
+  position: relative;
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: 6rem 1.25rem;
+  width: 100%;
+}
+
+@media (min-width: 1024px) {
+  .home__content {
+    padding: 6rem 2.5rem;
+  }
+}
+
+.home__hero {
+  max-width: 48rem;
+}
+
+.home__eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 2rem;
+}
+
+.home__eyebrow-line {
+  height: 1px;
+  width: 3rem;
+  background: #C9A030;
+}
+
+.home__eyebrow-text {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #C9A030;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.home__title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.4rem, 6vw, 4.5rem);
+  font-weight: 700;
+  color: #F8F4EE;
+  line-height: 1.1;
+  margin-bottom: 1.5rem;
+}
+
+.home__title-highlight {
+  font-style: normal;
+  background: linear-gradient(90deg, #C9A030, #E8D080);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.home__subtitle {
+  font-family: 'DM Sans', sans-serif;
+  font-size: clamp(1rem, 2.2vw, 1.15rem);
+  color: rgba(240, 235, 224, 0.65);
+  line-height: 1.75;
+  max-width: 36rem;
+  margin-bottom: 2.5rem;
+}
+
+.home__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.home__btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem 2rem;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: #1E2228;
+  background: linear-gradient(135deg, #C9A030, #E8D080);
+  text-decoration: none;
+  transition: filter 0.2s ease, transform 0.2s ease;
+}
+
+.home__btn-primary:hover {
+  filter: brightness(1.08);
+  transform: scale(1.02);
+}
+
+.home__btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem 2rem;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #F8F4EE;
+  border: 1px solid rgba(248, 244, 238, 0.3);
+  text-decoration: none;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.home__btn-secondary:hover {
+  border-color: #C9A030;
+  color: #C9A030;
+}
+
+/* Stats bar — contrasting cream panel at the bottom of hero */
+.home__stats {
+  margin-top: 5rem;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1px;
+  background: rgba(201, 160, 48, 0.25);
+  border: 1px solid rgba(201, 160, 48, 0.25);
+}
+
+@media (min-width: 1024px) {
+  .home__stats {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.home__stat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 1.25rem 1.5rem;
+  background: rgba(30, 34, 40, 0.82);
+}
+
+.home__stat-value {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.5rem, 3.5vw, 2.2rem);
+  font-weight: 700;
+  color: #C9A030;
+  line-height: 1;
+}
+
+.home__stat-label {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.025em;
+  color: rgba(240, 235, 224, 0.55);
+}
+
+.home__scroll-cue {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  opacity: 0.4;
+}
+
+.home__scroll-text {
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(240, 235, 224, 0.6);
+  font-family: 'DM Sans', sans-serif;
+}
+
+.home__scroll-icon {
+  animation: bounce 1.5s infinite;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(4px); }
+}
