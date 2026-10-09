@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { CheckCircle, Play } from "lucide-react";
+import { CheckCircle, Play, Target, ShieldCheck, Smile, Users, Zap } from "lucide-react";
 
 import "./Sobre.css";
 
@@ -23,9 +23,7 @@ export default function Sobre() {
 
   const handleMouseEnter = (videoRef: React.RefObject<HTMLVideoElement | null>) => {
     if (videoRef.current) {
-      // Tenta dar play mantendo as configurações de som que o utilizador escolheu
       videoRef.current.play().catch(() => {
-        // Se o browser proibir o som automático inicial, dá play sem forçar muting permanente
         if (videoRef.current) {
           videoRef.current.muted = true;
           videoRef.current.play();
@@ -38,7 +36,6 @@ export default function Sobre() {
     videoRef: React.RefObject<HTMLVideoElement | null>,
     e: React.MouseEvent
   ) => {
-    // Evita pausar se o cursor apenas se moveu para os controlos internos do vídeo ou tela cheia
     const relatedTarget = e.relatedTarget as HTMLElement;
     if (videoRef.current && !document.fullscreenElement) {
       if (!videoRef.current.contains(relatedTarget)) {
@@ -119,6 +116,85 @@ export default function Sobre() {
         </div>
 
         {/* =====================================================
+            MISSÃO E VALORES
+        ===================================================== */}
+        <div className="sobre__mission-values">
+          <div className="sobre__mission-card">
+            <div className="sobre__mission-badge">
+              <Target size={20} />
+              <span>Nossa Essência</span>
+            </div>
+            <h3 className="sobre__mission-title">Missão que Transforma Sonhos</h3>
+            <p className="sobre__mission-text">
+              Assumimos a missão de gerar encantamento de forma consciente, a partir de ações e resultados que permitam materializar sonhos, oferecer as melhores soluções e alavancar prosperidade.
+            </p>
+          </div>
+
+          <div className="sobre__values-grid">
+            <div className="sobre__value-box">
+              <div className="sobre__value-icon-wrapper">
+                <ShieldCheck size={24} />
+              </div>
+              <h4 className="sobre__value-title">Ser Íntegro</h4>
+              <p className="sobre__value-desc">Nossas bases são a integridade e o respeito. Sustentam a relação de confiança, ética e transparência absoluta.</p>
+            </div>
+
+            <div className="sobre__value-box">
+              <div className="sobre__value-icon-wrapper">
+                <Smile size={24} />
+              </div>
+              <h4 className="sobre__value-title">Ser Simples</h4>
+              <p className="sobre__value-desc">Acreditamos no poder da simplicidade. Ela conecta e transforma desafios burocráticos em oportunidades claras.</p>
+            </div>
+
+            <div className="sobre__value-box">
+              <div className="sobre__value-icon-wrapper">
+                <Users size={24} />
+              </div>
+              <h4 className="sobre__value-title">Construir Juntos</h4>
+              <p className="sobre__value-desc">Fazer juntos é a melhor forma de evoluir, cultivando a cooperação, o apoio mútuo e o verdadeiro espírito de equipe.</p>
+            </div>
+
+            <div className="sobre__value-box">
+              <div className="sobre__value-icon-wrapper">
+                <Zap size={24} />
+              </div>
+              <h4 className="sobre__value-title">Inovar Sempre</h4>
+              <p className="sobre__value-desc">Inovar é atitude de protagonismo. Significa provocar novas formas de fazer e entregar o melhor em cada área.</p>
+            </div>
+          </div>
+        </div>
+
+        {/* =====================================================
+            CARROSSEL CONTÍNUO DE IMAGENS E TEXTOS (MARQUEE)
+        ===================================================== */}
+        <div className="sobre__marquee-section">
+          <div className="sobre__marquee-track">
+            <div className="sobre__marquee-group">
+              <span className="sobre__marquee-text">Conquistas Reais</span>
+              <img src={foto4} alt="Cliente" className="sobre__marquee-img" />
+              <span className="sobre__marquee-text">Planejamento Inteligente</span>
+              <img src={foto2} alt="Equipe" className="sobre__marquee-img" />
+              <span className="sobre__marquee-text">Segurança e Transparência</span>
+              <img src={foto3} alt="Atendimento" className="sobre__marquee-img" />
+              <span className="sobre__marquee-text">Seu Sonho Realizado</span>
+              <img src={foto1} alt="Escritório" className="sobre__marquee-img" />
+            </div>
+            {/* Grupo duplicado para criar o efeito infinito fluido */}
+            <div className="sobre__marquee-group" aria-hidden="true">
+              <span className="sobre__marquee-text">Conquistas Reais</span>
+              <img src={foto4} alt="Cliente" className="sobre__marquee-img" />
+              <span className="sobre__marquee-text">Planejamento Inteligente</span>
+              <img src={foto2} alt="Equipe" className="sobre__marquee-img" />
+              <span className="sobre__marquee-text">Segurança e Transparência</span>
+              <img src={foto3} alt="Atendimento" className="sobre__marquee-img" />
+              <span className="sobre__marquee-text">Seu Sonho Realizado</span>
+              <img src={foto1} alt="Escritório" className="sobre__marquee-img" />
+            </div>
+          </div>
+        </div>
+
+        {/* =====================================================
             GALERIA
         ===================================================== */}
         <div className="sobre__gallery">
@@ -176,7 +252,7 @@ export default function Sobre() {
           </div>
 
           {/* =====================================================
-              2 VÍDEOS (Livre controlo de som e interatividade)
+              2 VÍDEOS
           ===================================================== */}
           <div className="sobre__videos">
 
