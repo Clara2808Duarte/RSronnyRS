@@ -12,7 +12,7 @@ import {
 
 import { NAV_LINKS, WHATSAPP_NUMBER } from "../../data";
 
-import logo from "../../assets/logo.png";
+import logo2 from "../../assets/logo2.png";
 
 import "./Footer.css";
 
@@ -27,7 +27,7 @@ export function Footer() {
           <div className="footer__brand">
 
             <img
-              src={logo}
+              src={logo2}
               alt="RS Intermediações e Negócios"
               className="footer__logo"
             />
