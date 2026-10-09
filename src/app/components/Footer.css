@@ -1,6 +1,6 @@
 .footer {
-  background: #1E2228;
-  border-top: 2px solid #C9A030;
+  background: #1e2228;
+  border-top: 2px solid #c9a030;
 }
 
 .footer__container {
@@ -9,12 +9,7 @@
   padding: 4rem 1.25rem;
 }
 
-@media (min-width: 1024px) {
-  .footer__container {
-    padding: 4rem 2.5rem;
-  }
-}
-
+/* GRID PRINCIPAL */
 .footer__grid {
   display: grid;
   grid-template-columns: 1fr;
@@ -22,39 +17,27 @@
   margin-bottom: 4rem;
 }
 
-@media (min-width: 640px) {
-  .footer__grid {
-    grid-template-columns: 1fr 1fr;
-  }
-}
-
-@media (min-width: 1024px) {
-  .footer__grid {
-    grid-template-columns: 2fr 1fr 1fr 1fr;
-  }
-}
-
+/* BRANDING & LOGO */
 .footer__brand {
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  align-items: flex-start; /* Garante alinhamento dos itens à esquerda */
+  align-items: flex-start;
 }
 
-/* LOGO CORRIGIDA E PROPORCIONAL */
 .footer__logo {
-  height: 4.5rem;          /* Altura fixa e bem proporcional */
-  width: auto;             /* Ajusta a largura automaticamente sem distorcer */
-  max-width: 180px;        /* Evita que fique gigante em telas grandes */
-  object-fit: contain;     /* Preserva a proporção exata da imagem */
+  height: 4.5rem;
+  width: auto;
+  max-width: 180px;
+  object-fit: contain;
   display: block;
 }
 
 .footer__ladologo {
   font-size: 1.25rem;
   font-weight: 700;
-  color: #F0EBE0;
-  font-family: 'DM Sans', sans-serif;
+  color: #f0ebe0;
+  font-family: "DM Sans", sans-serif;
   margin: 0;
 }
 
@@ -62,49 +45,12 @@
   font-size: 0.875rem;
   line-height: 1.75;
   color: rgba(240, 235, 224, 0.55);
-  font-family: 'DM Sans', sans-serif;
-  max-width: 320px;       /* Mantém a largura do texto agradável para leitura */
+  font-family: "DM Sans", sans-serif;
+  max-width: 320px;
   margin: 0;
 }
 
-
-/* ==========================================================================
-   RESPONSIVIDADE (MEDIA QUERIES)
-   ========================================================================== */
-
-/* Tablets e notebooks pequenos (até 1024px) */
-@media (max-width: 1024px) {
-  .footer__logo {
-    height: 4rem;
-  }
-
-  .footer__ladologo {
-    font-size: 1.15rem;
-  }
-}
-
-/* Celulares (até 640px) */
-@media (max-width: 640px) {
-  .footer__brand {
-    gap: 0.875rem;
-    align-items: center;   /* Centraliza a marca no rodapé no celular (se desejado) */
-    text-align: center;
-  }
-
-  .footer__logo {
-    height: 3.5rem;
-  }
-
-  .footer__ladologo {
-    font-size: 1.1rem;
-  }
-
-  .footer__tagline {
-    font-size: 0.825rem;
-    max-width: 100%;       /* Ocupa a largura disponível no mobile */
-  }
-}
-
+/* BOTÃO WHATSAPP */
 .footer__whatsapp-btn {
   display: inline-flex;
   align-items: center;
@@ -115,9 +61,9 @@
   letter-spacing: 0.08em;
   text-transform: uppercase;
   text-decoration: none;
-  color: #1E2228;
-  background: linear-gradient(135deg, #C9A030, #E8D080);
-  font-family: 'DM Sans', sans-serif;
+  color: #1e2228;
+  background: linear-gradient(135deg, #c9a030, #e8d080);
+  font-family: "DM Sans", sans-serif;
   transition: filter 0.2s ease;
   align-self: flex-start;
 }
@@ -126,6 +72,7 @@
   filter: brightness(1.08);
 }
 
+/* SEÇÕES DO FOOTER */
 .footer__section {
   display: flex;
   flex-direction: column;
@@ -137,8 +84,8 @@
   font-weight: 700;
   letter-spacing: 0.15em;
   text-transform: uppercase;
-  color: #C9A030;
-  font-family: 'DM Sans', sans-serif;
+  color: #c9a030;
+  font-family: "DM Sans", sans-serif;
 }
 
 .footer__links {
@@ -151,18 +98,18 @@
   font-size: 0.875rem;
   color: rgba(240, 235, 224, 0.55);
   text-decoration: none;
-  font-family: 'DM Sans', sans-serif;
+  font-family: "DM Sans", sans-serif;
   transition: color 0.2s ease;
 }
 
 .footer__link:hover {
-  color: #F0EBE0;
+  color: #f0ebe0;
 }
 
 .footer__service {
   font-size: 0.875rem;
   color: rgba(240, 235, 224, 0.45);
-  font-family: 'DM Sans', sans-serif;
+  font-family: "DM Sans", sans-serif;
 }
 
 .footer__contact-list {
@@ -178,7 +125,7 @@
 }
 
 .footer__contact-icon {
-  color: #C9A030;
+  color: #c9a030;
   flex-shrink: 0;
   margin-top: 2px;
 }
@@ -186,9 +133,73 @@
 .footer__contact-text {
   font-size: 0.875rem;
   color: rgba(240, 235, 224, 0.55);
-  font-family: 'DM Sans', sans-serif;
+  font-family: "DM Sans", sans-serif;
 }
 
+/* REDES SOCIAIS E AVALIAÇÃO */
+.footer__social-links {
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+  margin-top: 0.5rem;
+}
+
+.footer__social-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: rgba(240, 235, 224, 0.55);
+  text-decoration: none;
+  font-size: 0.875rem;
+  font-family: "DM Sans", sans-serif;
+  transition: color 0.2s ease;
+}
+
+.footer__social-link svg {
+  color: #c9a030;
+  flex-shrink: 0;
+}
+
+.footer__social-link:hover {
+  color: #f0ebe0;
+}
+
+/* BOTÃO AVALIAR NO GOOGLE */
+.footer__google-review-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+  padding: 0.5rem 0.875rem;
+  background-color: rgba(201, 160, 48, 0.1);
+  border: 1px solid #c9a030;
+  border-radius: 4px;
+  color: #c9a030;
+  font-size: 0.85rem;
+  font-weight: 600;
+  font-family: "DM Sans", sans-serif;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  width: fit-content;
+}
+
+.footer__google-review-btn:hover {
+  background-color: #c9a030;
+  color: #1e2228;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(201, 160, 48, 0.25);
+}
+
+.footer__star-icon {
+  fill: #c9a030;
+  transition: fill 0.3s ease;
+}
+
+.footer__google-review-btn:hover .footer__star-icon {
+  fill: #1e2228;
+}
+
+/* RODAPÉ INFERIOR (COPYRIGHT) */
 .footer__bottom {
   padding-top: 2rem;
   border-top: 1px solid rgba(255, 255, 255, 0.08);
@@ -197,77 +208,84 @@
   gap: 0.5rem;
   align-items: center;
   justify-content: space-between;
-}
-
-@media (min-width: 640px) {
-  .footer__bottom {
-    flex-direction: row;
-  }
+  text-align: center;
 }
 
 .footer__copy {
   font-size: 0.75rem;
   color: rgba(240, 235, 224, 0.3);
-  font-family: 'DM Sans', sans-serif;
+  font-family: "DM Sans", sans-serif;
 }
 
-.footer__social-links {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  margin-top: 14px;
+/* ==========================================================================
+   RESPONSIVIDADE (MEDIA QUERIES)
+   ========================================================================== */
+
+/* Tablets em diante (min-width: 640px) */
+@media (min-width: 640px) {
+  .footer__grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .footer__bottom {
+    flex-direction: row;
+    text-align: left;
+  }
 }
 
-.footer__social-link {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  color: #a0a0a0;
-  text-decoration: none;
-  font-size: 16px;
-  line-height: 1.5;
-  transition: color 0.2s ease;
+/* Desktops e Monitores (min-width: 1024px) */
+@media (min-width: 1024px) {
+  .footer__container {
+    padding: 4rem 2.5rem;
+  }
+
+  .footer__grid {
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+  }
 }
 
-.footer__social-link svg {
-  color: #d9ad27;
-  flex-shrink: 0;
-}
+/* Ajuste específico para Telas Pequenas/Telemóveis (max-width: 640px) */
+@media (max-width: 640px) {
+  .footer__container {
+    padding: 3rem 1.25rem 2rem;
+  }
 
-.footer__social-link:hover {
-  color: #d9ad27;
-}
+  .footer__brand {
+    align-items: center;
+    text-align: center;
+  }
 
-/* Botão "Avaliar no Google" */
-/* .footer__google-review-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  margin-top: 6px;
-  padding: 8px 14px;
-  background-color: rgba(212, 175, 55, 0.1); 
-  border: 1px solid #d4af37;                
-  border-radius: 6px;
-  color: #d4af37;                            
-  font-size: 0.85rem;
-  font-weight: 600;
-  text-decoration: none;
-  transition: all 0.3s ease;
-  width: fit-content;
-}
+  .footer__logo {
+    height: 3.75rem;
+  }
 
-.footer__google-review-btn:hover {
-  background-color: #d4af37;
-  color: #121212;                           
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.25);
-}
+  .footer__tagline {
+    max-width: 100%;
+  }
 
-.footer__star-icon {
-  fill: #d4af37;                            
-  transition: fill 0.3s ease;
-}
+  .footer__whatsapp-btn {
+    align-self: center;
+    width: 100%;
+    max-width: 280px;
+    justify-content: center;
+  }
 
-.footer__google-review-btn:hover .footer__star-icon {
-  fill: #121212;                            
-}  */
+  .footer__section {
+    align-items: center;
+    text-align: center;
+  }
+
+  .footer__contact-item {
+    justify-content: center;
+  }
+
+  .footer__social-links {
+    align-items: center;
+  }
+
+  .footer__google-review-btn {
+    width: 100%;
+    max-width: 240px;
+    justify-content: center;
+  }
+}
