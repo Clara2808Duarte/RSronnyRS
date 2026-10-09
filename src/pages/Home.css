@@ -423,6 +423,205 @@
 }
 
 /* ==========================================================================
+   SEÇÃO HISTÓRIAS (LEQUE DE CARDS / DECK COM TRANSIÇÃO SUAVE)
+   ========================================================================== */
+.stories {
+  padding: 100px 20px;
+  background-color: #0d1117;
+  display: flex;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.stories__container {
+  max-width: 1280px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+}
+
+/* Lado Esquerdo - Textos */
+.stories__info {
+  max-width: 440px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.stories__title {
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1.2;
+  margin-bottom: 16px;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.stories__description {
+  font-size: 1rem;
+  color: #a0aec0;
+  line-height: 1.65;
+  margin-bottom: 24px;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.stories__hint {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  color: #c9a030;
+  text-transform: uppercase;
+  margin-bottom: 32px;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.stories__instagram-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 28px;
+  background-color: rgba(201, 160, 48, 0.12);
+  border: 1px solid #c9a030;
+  border-radius: 50px;
+  color: #c9a030;
+  font-weight: 700;
+  font-size: 0.9rem;
+  text-decoration: none;
+  font-family: 'DM Sans', sans-serif;
+  transition: all 0.3s ease;
+}
+
+.stories__instagram-btn:hover {
+  background-color: #c9a030;
+  color: #0d1117;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(201, 160, 48, 0.3);
+}
+
+/* Lado Direito - Deck de Cards em Leque */
+.stories__deck {
+  position: relative;
+  width: 580px;
+  height: 440px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.stories__card {
+  position: absolute;
+  width: 220px;
+  height: 380px;
+  border-radius: 20px;
+  overflow: hidden;
+  border: 2px solid rgba(201, 160, 48, 0.3);
+  box-shadow: -10px 15px 30px rgba(0, 0, 0, 0.5);
+  
+  /* MOVIMENTO SUAVE AO PASSAR O MOUSE (0.7s) */
+  transition: transform 0.7s cubic-bezier(0.25, 1, 0.5, 1), 
+              box-shadow 0.7s ease, 
+              border-color 0.5s ease;
+              
+  cursor: pointer;
+  background: #1e2228;
+}
+
+.stories__card-media {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.stories__card-badge {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  z-index: 3;
+  padding: 4px 12px;
+  background: #c9a030;
+  color: #0d1117;
+  font-size: 0.68rem;
+  font-weight: 800;
+  border-radius: 20px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  font-family: 'DM Sans', sans-serif;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.stories__card-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 60%, rgba(13, 17, 23, 0.8) 100%);
+  z-index: 2;
+}
+
+/* ÂNGULOS E POSIÇÕES DO LEQUE */
+.stories__card--1 {
+  transform: rotate(-16deg) translateX(-140px) translateY(10px);
+  z-index: 1;
+}
+
+.stories__card--2 {
+  transform: rotate(-8deg) translateX(-80px) translateY(17px);
+  z-index: 2;
+}
+
+.stories__card--3 {
+  transform: rotate(0deg) translateX(0px);
+  z-index: 3;
+}
+
+.stories__card--4 {
+  transform: rotate(8deg) translateX(80px) translateY(17px);
+  z-index: 4;
+}
+
+.stories__card--5 {
+  transform: rotate(16deg) translateX(140px) translateY(10px);
+  z-index: 5;
+}
+
+/* Efeito Hover nos Cards */
+.stories__card:hover {
+  transform: scale(1.08) translateY(-20px) rotate(0deg) !important;
+  z-index: 20 !important;
+  border-color: #c9a030;
+  box-shadow: 0 25px 45px rgba(0, 0, 0, 0.7), 0 0 20px rgba(201, 160, 48, 0.3);
+}
+
+/* Ícone de Play sobre os cards de vídeo */
+.stories__card-play-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background-color: #c9a030;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 4;
+  pointer-events: none;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.stories__card:hover .stories__card-play-icon {
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.8);
+}
+
+/* ==========================================================================
    SEÇÃO CTA DE SIMULAÇÃO (EFEITO HOVER BLUR NO FUNDO)
    ========================================================================== */
 .cta-banner {
@@ -532,7 +731,7 @@
   border-radius: 50px;
   text-decoration: none;
   font-family: "DM Sans", sans-serif;
-  transition: all 0.3s ease;
+  transition: all 0.7s ease;
   box-shadow: 0 8px 24px rgba(201, 160, 48, 0.25);
   margin-top: 10px;
 }
@@ -567,6 +766,32 @@
     grid-template-columns: repeat(2, 1fr);
     gap: 20px;
   }
+
+  .stories__container {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .stories__info {
+    align-items: center;
+  }
+
+  .stories__deck {
+    width: 100%;
+    max-width: 480px;
+    height: 380px;
+  }
+
+  .stories__card {
+    width: 170px;
+    height: 300px;
+  }
+
+  .stories__card--1 { transform: rotate(-14deg) translateX(-100px); }
+  .stories__card--2 { transform: rotate(-7deg) translateX(-50px); }
+  .stories__card--3 { transform: rotate(0deg); }
+  .stories__card--4 { transform: rotate(7deg) translateX(50px); }
+  .stories__card--5 { transform: rotate(14deg) translateX(100px); }
 }
 
 @media (max-width: 640px) {
@@ -594,4 +819,27 @@
     width: 100%;
     max-width: 290px;
   }
+
+  .stories {
+    padding: 60px 16px;
+  }
+
+  .stories__title {
+    font-size: 1.8rem;
+  }
+
+  .stories__deck {
+    height: 320px;
+  }
+
+  .stories__card {
+    width: 130px;
+    height: 230px;
+  }
+
+  .stories__card--1 { transform: rotate(-12deg) translateX(-70px); }
+  .stories__card--2 { transform: rotate(-6deg) translateX(-35px); }
+  .stories__card--3 { transform: rotate(0deg); }
+  .stories__card--4 { transform: rotate(6deg) translateX(35px); }
+  .stories__card--5 { transform: rotate(12deg) translateX(70px); }
 }

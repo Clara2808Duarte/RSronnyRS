@@ -1,3 +1,6 @@
+// Substitui o conteúdo do teu arquivo Home.tsx por este:
+
+import { useState } from "react";
 import { Link, useNavigate } from "react-router";
 import {
   ArrowRight,
@@ -6,8 +9,19 @@ import {
   Truck,
   TrendingUp,
   ChevronDown,
+  Instagram,
+  Play,
 } from "lucide-react";
 import "./Home.css";
+
+// --- IMPORTAÇÕES DAS MÍDIAS (CORRIGIDAS USANDO A TUA ESTRUTURA REAL) ---
+
+// Usamos "../assets/" porque o Home.tsx está dentro de pages, e precisa subir um nível para achar assets.
+import foto5_img from "../assets/foto5.png"; // Importamos o arquivo foto2.png
+import video1 from "../assets/video1.mp4"; // Importamos o video1
+import foto6_img from "../assets/foto6.png"; // Importamos foto3.png
+import video2 from "../assets/video2.mp4"; // Importamos o video2
+import foto7_img from "../assets/foto7.png"; // Importamos foto4.png
 
 const STATS = [
   { value: "9+", label: "Anos de experiência" },
@@ -52,6 +66,45 @@ const OBJECTIVES = [
     icon: TrendingUp,
     bgImage:
       "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&auto=format&fit=crop&q=80",
+  },
+];
+
+// --- ARRAY DE DEPOIMENTOS (CORRIGIDO PARA USAR AS MÍDIAS EXISTENTES) ---
+const STORIES = [
+  {
+    id: 1,
+    type: "image",
+    badge: "CONTEMPLADO",
+    title: "Casa Própria",
+    mediaUrl: foto5_img, // Usando a variável importada de foto5.png
+  },
+  {
+    id: 2,
+    type: "video",
+    badge: "EM VÍDEO",
+    title: "Depoimento Cliente",
+    mediaUrl: video1, // Usando a variável do video1
+  },
+  {
+    id: 3,
+    type: "image",
+    badge: "6 COTAS",
+    title: "Investimento Imobiliário",
+    mediaUrl: foto6_img, // Usando a variável importada de foto6.png
+  },
+  {
+    id: 4,
+    type: "video",
+    badge: "HISTÓRIA REAL",
+    title: "Entrega do Veículo",
+    mediaUrl: video2, // Usando a variável do video2
+  },
+  {
+    id: 5,
+    type: "image",
+    badge: "CONTEMPLADO",
+    title: "Frota Renovada",
+    mediaUrl: foto7_img, // Usando a variável importada de foto7.png
   },
 ];
 
@@ -179,7 +232,74 @@ export default function Home() {
         </div>
       </section>
 
-      {/* SEÇÃO CTA DE SIMULAÇÃO COM EFEITO DE HOVER NO FUNDO */}
+      {/* SEÇÃO HISTÓRIAS E DEPOIMENTOS */}
+      <section className="stories">
+        <div className="stories__container">
+          <div className="stories__info">
+            <h2 className="stories__title">Conquistas reais, em detalhes</h2>
+            <p className="stories__description">
+              Clientes que confiaram na estratégia certa e foram contemplados — a
+              casa própria, a frota, o carro dos sonhos. Cada carta de crédito aqui
+              é uma vitória realizada.
+            </p>
+
+            <span className="stories__hint">
+              PASSE O MOUSE E ASSISTA <ArrowRight size={16} />
+            </span>
+
+            <a
+              href="https://www.instagram.com/ronny.consultor/"
+              target="_blank"
+              rel="noreferrer"
+              className="stories__instagram-btn"
+            >
+              <Instagram size={18} />
+              Acompanhe no Instagram
+            </a>
+          </div>
+
+          <div className="stories__deck">
+            {STORIES.map((item, index) => (
+              <div
+                key={item.id}
+                className={`stories__card stories__card--${index + 1}`}
+              >
+                <div className="stories__card-badge">{item.badge}</div>
+
+                {item.type === "video" ? (
+                  <>
+                    <video
+                      src={item.mediaUrl}
+                      className="stories__card-media"
+                      loop
+                      muted
+                      playsInline
+                      onMouseEnter={(e) => e.currentTarget.play()}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.pause();
+                        e.currentTarget.currentTime = 0;
+                      }}
+                    />
+                    <div className="stories__card-play-icon">
+                      <Play size={20} fill="#0d1117" />
+                    </div>
+                  </>
+                ) : (
+                  <img
+                    src={item.mediaUrl}
+                    alt={item.title}
+                    className="stories__card-media"
+                  />
+                )}
+
+                <div className="stories__card-overlay" />
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* SEÇÃO CTA DE SIMULAÇÃO */}
       <section className="cta-banner">
         <div className="cta-banner__bg" />
         <div className="cta-banner__overlay" />
