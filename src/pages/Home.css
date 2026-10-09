@@ -423,7 +423,7 @@
 }
 
 /* ==========================================================================
-   SEÇÃO HISTÓRIAS / DEPOIMENTOS (CORRIGIDO & SUAVE)
+   SEÇÃO HISTÓRIAS / DEPOIMENTOS (LAYOUT OTIMIZADO & TRANSIÇÃO LENTA 1.8s)
    ========================================================================== */
 .stories {
   padding: 120px 20px;
@@ -441,12 +441,12 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 40px;
+  gap: 60px;
 }
 
 /* Lado Esquerdo - Textos */
 .stories__info {
-  max-width: 420px;
+  max-width: 440px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -525,10 +525,10 @@
   border: 1.5px solid rgba(201, 160, 48, 0.35);
   box-shadow: -10px 20px 35px rgba(0, 0, 0, 0.6);
   
-  /* TRANSIÇÃO MUITO MAIS LENTA E FLUIDA AO PASSAREM O MOUSE (1.2s) */
-  transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1), 
-              box-shadow 1.2s ease, 
-              border-color 0.6s ease;
+  /* ANIMAÇÃO BEM LENTA E SUAVE (1.8s) */
+  transition: transform 1.8s cubic-bezier(0.1, 0.9, 0.2, 1), 
+              box-shadow 1.8s ease, 
+              border-color 0.8s ease;
               
   cursor: pointer;
   background: #1e2228;
@@ -539,6 +539,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  display: block;
 }
 
 .stories__card-badge {
@@ -565,14 +566,14 @@
   z-index: 2;
 }
 
-/* ESPAÇAMENTO E ÂNGULOS DO LEQUE (LEQUE MAIS ABERTO E HARMONIOSO) */
+/* ÂNGULOS E POSIÇÕES DO LEQUE */
 .stories__card--1 {
-  transform: rotate(-18deg) translateX(-160px) translateY(15px);
+  transform: rotate(-18deg) translateX(-150px) translateY(15px);
   z-index: 1;
 }
 
 .stories__card--2 {
-  transform: rotate(-9deg) translateX(-80px) translateY(5px);
+  transform: rotate(-9deg) translateX(-75px) translateY(5px);
   z-index: 2;
 }
 
@@ -582,12 +583,12 @@
 }
 
 .stories__card--4 {
-  transform: rotate(9deg) translateX(80px) translateY(5px);
+  transform: rotate(9deg) translateX(75px) translateY(5px);
   z-index: 4;
 }
 
 .stories__card--5 {
-  transform: rotate(18deg) translateX(160px) translateY(15px);
+  transform: rotate(18deg) translateX(150px) translateY(15px);
   z-index: 5;
 }
 
@@ -614,7 +615,7 @@
   justify-content: center;
   z-index: 4;
   pointer-events: none;
-  transition: opacity 0.5s ease, transform 0.5s ease;
+  transition: opacity 0.6s ease, transform 0.6s ease;
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5);
 }
 
@@ -623,60 +624,6 @@
   transform: translate(-50%, -50%) scale(0.7);
 }
 
-/* RESPONSIVIDADE */
-@media (max-width: 1024px) {
-  .stories__container {
-    flex-direction: column;
-    text-align: center;
-    justify-content: center;
-  }
-
-  .stories__info {
-    align-items: center;
-  }
-
-  .stories__deck {
-    width: 100%;
-    max-width: 480px;
-    height: 380px;
-  }
-
-  .stories__card {
-    width: 170px;
-    height: 300px;
-  }
-
-  .stories__card--1 { transform: rotate(-14deg) translateX(-110px); }
-  .stories__card--2 { transform: rotate(-7deg) translateX(-55px); }
-  .stories__card--3 { transform: rotate(0deg); }
-  .stories__card--4 { transform: rotate(7deg) translateX(55px); }
-  .stories__card--5 { transform: rotate(14deg) translateX(110px); }
-}
-
-@media (max-width: 640px) {
-  .stories {
-    padding: 60px 16px;
-  }
-
-  .stories__title {
-    font-size: 1.8rem;
-  }
-
-  .stories__deck {
-    height: 320px;
-  }
-
-  .stories__card {
-    width: 130px;
-    height: 230px;
-  }
-
-  .stories__card--1 { transform: rotate(-12deg) translateX(-75px); }
-  .stories__card--2 { transform: rotate(-6deg) translateX(-38px); }
-  .stories__card--3 { transform: rotate(0deg); }
-  .stories__card--4 { transform: rotate(6deg) translateX(38px); }
-  .stories__card--5 { transform: rotate(12deg) translateX(75px); }
-}
 /* ==========================================================================
    SEÇÃO CTA DE SIMULAÇÃO (EFEITO HOVER BLUR NO FUNDO)
    ========================================================================== */
@@ -898,4 +845,110 @@
   .stories__card--3 { transform: rotate(0deg); }
   .stories__card--4 { transform: rotate(6deg) translateX(35px); }
   .stories__card--5 { transform: rotate(12deg) translateX(70px); }
+}
+
+
+/* ==========================================================================
+   SEÇÃO FAQ / INICIANDO NO CONSÓRCIO (ACORDEÃO)
+   ========================================================================== */
+.faq-section {
+  padding: 100px 20px;
+  background-color: #0d1117;
+  display: flex;
+  justify-content: center;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.faq-container {
+  max-width: 900px;
+  width: 100%;
+}
+
+.faq-header {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.faq-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 4vw, 2.6rem);
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 12px;
+}
+
+.faq-subtitle {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 1rem;
+  color: rgba(240, 235, 224, 0.65);
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+.faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.faq-card {
+  background: rgba(30, 34, 40, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 20px 24px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  user-select: none;
+}
+
+.faq-card:hover {
+  border-color: rgba(201, 160, 48, 0.4);
+  background: rgba(30, 34, 40, 0.9);
+}
+
+.faq-card--open {
+  border-color: #c9a030;
+  background: rgba(30, 34, 40, 0.95);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+.faq-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.faq-question {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.faq-toggle-btn {
+  background: transparent;
+  border: none;
+  color: #c9a030;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+  transition: transform 0.3s ease;
+}
+
+.faq-card-content {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.faq-answer {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.95rem;
+  color: rgba(240, 235, 224, 0.7);
+  line-height: 1.7;
+  margin: 0;
 }

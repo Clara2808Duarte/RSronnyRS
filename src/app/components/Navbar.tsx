@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link, NavLink } from "react-router";
+import { NavLink, Link } from "react-router";
 import { Menu, X, ArrowRight } from "lucide-react";
 import { NAV_LINKS } from "../../data";
 import logo2 from "../../assets/logo2.png";
@@ -10,7 +10,7 @@ export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40);
+    const onScroll = () => setScrolled(window.scrollY > 30);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
@@ -18,6 +18,7 @@ export function Navbar() {
   return (
     <header className={`navbar ${scrolled ? "navbar--scrolled" : ""}`}>
       <div className="navbar__container">
+        {/* LOGO À ESQUERDA */}
         <Link to="/" className="navbar__logo-link">
           <img
             src={logo2}
@@ -26,6 +27,7 @@ export function Navbar() {
           />
         </Link>
 
+        {/* LINKS CENTRALIZADOS (Estilo Minimalista/Clean) */}
         <nav className="navbar__links">
           {NAV_LINKS.map((link) => (
             <NavLink
@@ -41,10 +43,12 @@ export function Navbar() {
           ))}
         </nav>
 
+        {/* BOTÃO CTA (SIMULAR CRÉDITO) - DESKTOP */}
         <Link to="/simulacao" className="navbar__cta">
           Simular Crédito <ArrowRight size={14} />
         </Link>
 
+        {/* BOTÃO HAMBÚRGUER MOBILE */}
         <button
           className="navbar__hamburger"
           onClick={() => setOpen(!open)}
@@ -54,6 +58,7 @@ export function Navbar() {
         </button>
       </div>
 
+      {/* MENU MOBILE */}
       {open && (
         <div className="navbar__mobile">
           {NAV_LINKS.map((link) => (
@@ -69,6 +74,7 @@ export function Navbar() {
               {link.label}
             </NavLink>
           ))}
+          {/* BOTÃO CTA (SIMULAR CRÉDITO) - MOBILE */}
           <Link
             to="/simulacao"
             className="navbar__mobile-cta"
