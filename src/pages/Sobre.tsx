@@ -166,32 +166,58 @@ export default function Sobre() {
         </div>
 
         {/* =====================================================
-            CARROSSEL CONTÍNUO DE IMAGENS E TEXTOS (MARQUEE)
+            SEÇÃO DE CARROSSEL UNIFICADA (TRIPLA FAIXA)
         ===================================================== */}
         <div className="sobre__marquee-section">
-          <div className="sobre__marquee-track">
+          
+          {/* Linha 1: Esquerda */}
+          <div className="sobre__marquee-track sobre__marquee-track--left">
             <div className="sobre__marquee-group">
               <span className="sobre__marquee-text">Conquistas Reais</span>
-              <img src={foto4} alt="Cliente" className="sobre__marquee-img" />
               <span className="sobre__marquee-text">Planejamento Inteligente</span>
-              <img src={foto2} alt="Equipe" className="sobre__marquee-img" />
               <span className="sobre__marquee-text">Segurança e Transparência</span>
-              <img src={foto3} alt="Atendimento" className="sobre__marquee-img" />
               <span className="sobre__marquee-text">Seu Sonho Realizado</span>
-              <img src={foto1} alt="Escritório" className="sobre__marquee-img" />
             </div>
-            {/* Grupo duplicado para criar o efeito infinito fluido */}
             <div className="sobre__marquee-group" aria-hidden="true">
               <span className="sobre__marquee-text">Conquistas Reais</span>
-              <img src={foto4} alt="Cliente" className="sobre__marquee-img" />
               <span className="sobre__marquee-text">Planejamento Inteligente</span>
-              <img src={foto2} alt="Equipe" className="sobre__marquee-img" />
               <span className="sobre__marquee-text">Segurança e Transparência</span>
-              <img src={foto3} alt="Atendimento" className="sobre__marquee-img" />
               <span className="sobre__marquee-text">Seu Sonho Realizado</span>
-              <img src={foto1} alt="Escritório" className="sobre__marquee-img" />
             </div>
           </div>
+
+          {/* Linha 2: Direita */}
+          <div className="sobre__marquee-track sobre__marquee-track--right">
+            <div className="sobre__marquee-group">
+              <span className="sobre__marquee-text">Crédito Estratégico</span>
+              <span className="sobre__marquee-text">Soluções Financeiras</span>
+              <span className="sobre__marquee-text">Parceria de Confiança</span>
+              <span className="sobre__marquee-text">Realize Seus Planos</span>
+            </div>
+            <div className="sobre__marquee-group" aria-hidden="true">
+              <span className="sobre__marquee-text">Crédito Estratégico</span>
+              <span className="sobre__marquee-text">Soluções Financeiras</span>
+              <span className="sobre__marquee-text">Parceria de Confiança</span>
+              <span className="sobre__marquee-text">Realize Seus Planos</span>
+            </div>
+          </div>
+
+          {/* Linha 3: Esquerda (Segmentos) */}
+          <div className="sobre__marquee-track sobre__marquee-track--left">
+            <div className="sobre__marquee-group">
+              <span className="sobre__marquee-text">Casa Própria</span>
+              <span className="sobre__marquee-text">Veículos de Passeio</span>
+              <span className="sobre__marquee-text">Veículos Pesados</span>
+              <span className="sobre__marquee-text">Investimentos</span>
+            </div>
+            <div className="sobre__marquee-group" aria-hidden="true">
+              <span className="sobre__marquee-text">Casa Própria</span>
+              <span className="sobre__marquee-text">Veículos de Passeio</span>
+              <span className="sobre__marquee-text">Veículos Pesados</span>
+              <span className="sobre__marquee-text">Investimentos</span>
+            </div>
+          </div>
+
         </div>
 
         {/* =====================================================
