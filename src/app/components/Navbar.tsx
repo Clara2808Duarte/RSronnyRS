@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Link, NavLink } from "react-router";
 import { Menu, X, ArrowRight } from "lucide-react";
 import { NAV_LINKS } from "../../data";
-// import { RSLogo } from "../../assets/logo.png";
+import logo2 from "../../assets/logo2.png";
 import "./Navbar.css";
 
 export function Navbar() {
@@ -18,8 +18,12 @@ export function Navbar() {
   return (
     <header className={`navbar ${scrolled ? "navbar--scrolled" : ""}`}>
       <div className="navbar__container">
-        <Link to="/" className="navbar__logo">
-          {/* <RSLogo className="navbar__logo-svg" /> */}
+        <Link to="/" className="navbar__logo-link">
+          <img
+            src={logo2}
+            alt="RS Intermediações e Negócios"
+            className="navbar__logo-img"
+          />
         </Link>
 
         <nav className="navbar__links">

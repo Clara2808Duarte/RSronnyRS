@@ -29,16 +29,37 @@
   }
 }
 
-.navbar__logo {
-  flex-shrink: 0;
+/* ==========================================================================
+   ESTILOS DA LOGO (CORRIGIDO PARA DAR PRESENÇA E NÃO ENCOLHER)
+   ========================================================================== */
+.navbar__logo-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   text-decoration: none;
+  flex-shrink: 0;
+  align-self: center; /* Garante o alinhamento vertical perfeito no centro do header */
+  height: auto;       /* Permite que o container se ajuste à altura da imagem */
 }
 
-.navbar__logo-svg {
-  height: 2.25rem;
+.navbar__logo-img {
+  height: 4.8rem;
   width: auto;
+  max-width: none;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;    /* Centralização horizontal de segurança */
+  transition: height 0.4s ease;
 }
 
+/* Redução suave da logo quando rola a página */
+.navbar--scrolled .navbar__logo-img {
+  height: 3.8rem;
+}
+
+/* ==========================================================================
+   LINKS DE NAVEGAÇÃO
+   ========================================================================== */
 .navbar__links {
   display: none;
   align-items: center;
@@ -69,6 +90,9 @@
   color: #C9A030;
 }
 
+/* ==========================================================================
+   BOTÃO CTA (SIMULAR CRÉDITO)
+   ========================================================================== */
 .navbar__cta {
   display: none;
   align-items: center;
@@ -94,6 +118,9 @@
   }
 }
 
+/* ==========================================================================
+   MENU HAMBÚRGUER & MOBILE
+   ========================================================================== */
 .navbar__hamburger {
   display: flex;
   align-items: center;
@@ -148,4 +175,10 @@
   color: #1E2228;
   background: linear-gradient(135deg, #C9A030, #E8D080);
   font-family: 'DM Sans', sans-serif;
+}
+
+@media (max-width: 640px) {
+  .navbar__logo-img {
+    height: 2.6rem;
+  }
 }

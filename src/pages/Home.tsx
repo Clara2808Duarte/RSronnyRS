@@ -19,31 +19,39 @@ const STATS = [
 const OBJECTIVES = [
   {
     id: "imovel",
-    title: "Casa própria",
+    title: "Conquista do imóvel",
     description:
-      "Quer sair do aluguel, comprar o primeiro imóvel ou trocar de casa sem comprometer toda a sua renda.",
+      "Conquiste sua casa, apartamento ou lote com planejamento financeiro inteligente e sem juros abusivos.",
     icon: HomeIcon,
+    bgImage:
+      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600&auto=format&fit=crop&q=80",
   },
   {
     id: "veiculo",
-    title: "Veículo de passeio",
+    title: "Veículos de passeio",
     description:
-      "Quer comprar e renovar veículos com condições que caibam no seu bolso e na sua vida.",
+      "Troque de carro ou conquiste seu novo veículo com parcelas previsíveis que caibam no seu orçamento.",
     icon: Car,
+    bgImage:
+      "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=600&auto=format&fit=crop&q=80",
   },
   {
     id: "pesados",
-    title: "Veículos pesados e frotas",
+    title: "Pesados e frotas",
     description:
-      "Quer adquirir caminhões, tratores, frotas ou maquinários para ampliar a força do seu negócio.",
+      "Adquira caminhões, máquinas agrícolas e utilitários para expandir e fortalecer a operação do seu negócio.",
     icon: Truck,
+    bgImage:
+      "https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?w=600&auto=format&fit=crop&q=80",
   },
   {
     id: "investimento",
-    title: "Investimento e patrimônio",
+    title: "Alavancagem patrimonial",
     description:
-      "Quer usar crédito de forma inteligente para construir ou ampliar patrimônio com eficiência financeira.",
+      "Utilize linhas de crédito estratégicas para construir patrimônio, rentabilizar capital e diversificar investimentos.",
     icon: TrendingUp,
+    bgImage:
+      "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&auto=format&fit=crop&q=80",
   },
 ];
 
@@ -129,7 +137,7 @@ export default function Home() {
           <div className="objectives__header">
             <h2 className="objectives__title">Qual é o seu objetivo?</h2>
             <p className="objectives__subtitle">
-              A estratégia muda. O compromisso com você é sempre o mesmo.
+              Cada conquista exige um plano sob medida. Escolha o seu caminho:
             </p>
           </div>
 
@@ -138,28 +146,65 @@ export default function Home() {
               const Icon = item.icon;
               return (
                 <div key={item.id} className="objectives__card">
-                  <div className="objectives__icon-wrapper">
-                    <Icon className="objectives__icon" size={24} />
+                  <div
+                    className="objectives__card-bg"
+                    style={{ backgroundImage: `url(${item.bgImage})` }}
+                  />
+                  <div className="objectives__card-overlay" />
+
+                  <div className="objectives__card-content">
+                    <div className="objectives__icon-wrapper">
+                      <Icon className="objectives__icon" size={24} />
+                    </div>
+
+                    <h3 className="objectives__card-title">{item.title}</h3>
+
+                    <p className="objectives__card-description">
+                      {item.description}
+                    </p>
+
+                    <button
+                      type="button"
+                      className="objectives__btn"
+                      onClick={() => handleObjectiveClick(item.id)}
+                    >
+                      Entender como funciona
+                      <ArrowRight size={18} className="objectives__btn-arrow" />
+                    </button>
                   </div>
-
-                  <h3 className="objectives__card-title">{item.title}</h3>
-
-                  <p className="objectives__card-description">
-                    {item.description}
-                  </p>
-
-                  <button
-                    type="button"
-                    className="objectives__btn"
-                    onClick={() => handleObjectiveClick(item.id)}
-                  >
-                    Entender como funciona
-                    <ArrowRight size={18} className="objectives__btn-arrow" />
-                  </button>
                 </div>
               );
             })}
           </div>
+        </div>
+      </section>
+
+      {/* SEÇÃO CTA DE SIMULAÇÃO COM EFEITO DE HOVER NO FUNDO */}
+      <section className="cta-banner">
+        <div className="cta-banner__bg" />
+        <div className="cta-banner__overlay" />
+
+        <div className="cta-banner__container">
+          <span className="cta-banner__pill">
+            Em menos de 3 minutos • Sem compromisso
+          </span>
+
+          <h2 className="cta-banner__title">
+            Descubra a melhor estratégia para o seu momento
+          </h2>
+
+          <p className="cta-banner__description">
+            Acesse nosso simulador exclusivo, configure o valor que precisa e
+            receba uma análise personalizada da nossa equipe.
+          </p>
+
+          <Link to="/simulacao" className="cta-banner__btn">
+            Fazer minha simulação
+          </Link>
+
+          <span className="cta-banner__footnote">
+            Atendimento rápido, seguro e transparente.
+          </span>
         </div>
       </section>
     </div>
