@@ -7,6 +7,7 @@ import {
   MessageCircle,
   Instagram,
   ExternalLink,
+  Star,
 } from "lucide-react";
 
 import { NAV_LINKS, WHATSAPP_NUMBER } from "../../data";
@@ -107,7 +108,7 @@ export function Footer() {
           </div>
 
 
-          {/* CONTATO */}
+          {/* CONTATO + AVALIAÇÃO */}
           <div className="footer__section">
 
             <p className="footer__section-title">
@@ -149,7 +150,7 @@ export function Footer() {
             </div>
 
 
-            {/* INSTAGRAM + RECLAME AQUI */}
+            {/* REDES SOCIAIS E AVALIAR NO GOOGLE */}
             <div className="footer__social-links">
 
               <a
@@ -172,6 +173,17 @@ export function Footer() {
                 <ExternalLink size={14} />
                 Reclame Aqui
               </a>
+
+              {/* BOTÃO DE AVALIAÇÃO NO GOOGLE
+              <a
+                href="SEU_LINK_DO_GOOGLE_MEU_NEGOCIO"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="footer__google-review-btn"
+              >
+                <Star size={14} className="footer__star-icon" />
+                Avaliar no Google
+              </a> */}
 
             </div>
 
