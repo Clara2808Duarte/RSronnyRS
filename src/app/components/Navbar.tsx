@@ -64,9 +64,7 @@ export function Navbar() {
           
           {session ? (
             <>
-              <Link to="/admin" className="navbar__admin-link" style={{ display: "flex", alignItems: "center", gap: "5px", color: "#d9ad27", fontSize: "0.85rem", fontWeight: 600, textDecoration: "none" }}>
-                <LayoutDashboard size={14} /> Painel Admin
-              </Link>
+             
               <Link to="/membros" className="navbar__member-link" style={{ display: "flex", alignItems: "center", gap: "5px", color: "#a7a7a7", fontSize: "0.85rem", fontWeight: 600, textDecoration: "none" }}>
                 <User size={14} /> Minha Conta
               </Link>
