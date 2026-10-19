@@ -106,20 +106,20 @@ export default function Simulacao() {
       setLoading(false);
     }
 
-    // 2. Montar mensagem e abrir o WhatsApp com emojis seguros em Unicode
+    // 2. Montar mensagem limpa para o WhatsApp
     const lines = [
-      `\uD83C\uDFC6 *Nova Simulação – RS Intermediações e Negócios*`,
+      `*Nova Simulação – RS Intermediações e Negócios*`,
       ``,
-      `\uD83D\uDC64 *Nome:* ${form.nome}`,
-      `\uD83D\uDCDE *Telefone:* ${form.telefone}`,
-      `\uD83D\uDCE7 *E-mail:* ${form.email}`,
+      `*Nome:* ${form.nome}`,
+      `*Telefone:* ${form.telefone}`,
+      `*E-mail:* ${form.email}`,
       ``,
-      `\uD83D\uDCBC *Tipo de Serviço:* ${form.tipoServico}`,
-      `\uD83D\uDCB0 *Valor do Crédito:* ${form.valorCredito}`,
-      `\uD83D\uDCE5 *Valor de Entrada:* ${form.valorEntrada}`,
+      `*Tipo de Serviço:* ${form.tipoServico}`,
+      `*Valor do Crédito:* ${form.valorCredito}`,
+      `*Valor de Entrada:* ${form.valorEntrada}`,
       ``,
-      `\uD83D\uDCF2 *Meio de Contato:* ${form.meioComunicacao}`,
-      `\uD83D\uDD50 *Melhor Período:* ${form.melhorPeriodo}`,
+      `*Meio de Contato:* ${form.meioComunicacao}`,
+      `*Melhor Período:* ${form.melhorPeriodo}`,
       ``,
       `_Simulação enviada pelo site._`,
     ];
