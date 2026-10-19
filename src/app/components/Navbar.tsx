@@ -111,14 +111,7 @@ export function Navbar() {
 
           {session ? (
             <>
-              <Link
-                to="/admin"
-                className="navbar__mobile-link"
-                onClick={() => setOpen(false)}
-                style={{ color: "#d9ad27" }}
-              >
-                📊 Painel Administrativo
-              </Link>
+             
               <Link
                 to="/membros"
                 className="navbar__mobile-link"
