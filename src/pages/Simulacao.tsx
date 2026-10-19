@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 
 import { WHATSAPP_NUMBER } from "../data";
-import { supabase } from "../../supabaseClient"; // <-- Importa o cliente do Supabase
+import { supabase } from "../../supabaseClient";
 
 import "./Simulacao.css";
 
@@ -106,20 +106,20 @@ export default function Simulacao() {
       setLoading(false);
     }
 
-    // 2. Montar mensagem e abrir o WhatsApp (comportamento original)
+    // 2. Montar mensagem e abrir o WhatsApp com emojis seguros (Unicode)
     const lines = [
-      `🏆 *Nova Simulação – RS Intermediações e Negócios*`,
+      `\uD83C\uDFC6 *Nova Simulação – RS Intermediações e Negócios*`,
       ``,
-      `👤 *Nome:* ${form.nome}`,
-      `📞 *Telefone:* ${form.telefone}`,
-      `📧 *E-mail:* ${form.email}`,
+      `\uD83D\uDC64 *Nome:* ${form.nome}`,
+      `\uD83D\uDCDE *Telefone:* ${form.telefone}`,
+      `\uD83D\uDCE7 *E-mail:* ${form.email}`,
       ``,
-      `💼 *Tipo de Serviço:* ${form.tipoServico}`,
-      `💰 *Valor do Crédito:* ${form.valorCredito}`,
-      `📥 *Valor de Entrada:* ${form.valorEntrada}`,
+      `\uD83D\uDCBC *Tipo de Serviço:* ${form.tipoServico}`,
+      `\uD83D\uDCB0 *Valor do Crédito:* ${form.valorCredito}`,
+      `\uD83D\uDCE5 *Valor de Entrada:* ${form.valorEntrada}`,
       ``,
-      `📲 *Meio de Contato:* ${form.meioComunicacao}`,
-      `🕐 *Melhor Período:* ${form.melhorPeriodo}`,
+      `\uD83D\uDCF2 *Meio de Contato:* ${form.meioComunicacao}`,
+      `\uD83D\uDD50 *Melhor Período:* ${form.melhorPeriodo}`,
       ``,
       `_Simulação enviada pelo site._`,
     ];

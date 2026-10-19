@@ -109,28 +109,6 @@ export function Footer() {
           </div>
 
 
-          {/* ÁREA DE MEMBROS E GESTÃO (NOVO) */}
-          <div className="footer__section">
-
-            <p className="footer__section-title">
-              Área do Cliente
-            </p>
-
-            <div className="footer__links">
-              <Link to="/membros" className="footer__link" style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-                <Lock size={13} /> Área de Membros
-              </Link>
-              <Link to="/admin" className="footer__link" style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-                <ShieldAlert size={13} /> Painel Administrativo
-              </Link>
-              <Link to="/simulacao" className="footer__link">
-                Fazer Simulação
-              </Link>
-            </div>
-
-          </div>
-
-
           {/* CONTATO + AVALIAÇÃO */}
           <div className="footer__section">
 
