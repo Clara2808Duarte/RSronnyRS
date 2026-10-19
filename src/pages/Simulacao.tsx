@@ -82,8 +82,8 @@ export default function Simulacao() {
     setLoading(true);
 
     try {
-      // 1. Gravar os dados na tabela "simulações" do Supabase
-      const { error } = await supabase.from('simulações').insert([
+      // 1. Gravar os dados na tabela "simulacoes" do Supabase
+      const { error } = await supabase.from('simulacoes').insert([
         {
           nome: form.nome,
           telefone: form.telefone,

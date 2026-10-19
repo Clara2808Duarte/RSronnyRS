@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { Users, TrendingUp, ShieldCheck, Mail, Phone, Calendar, ArrowUpRight } from "lucide-react";
-import { supabase } from "../../supabaseClient"; // Certifica-te de que o caminho para o teu cliente supabase está correto
+import { Users, TrendingUp, ShieldCheck, Mail, Phone, Calendar, ArrowUpRight, Lock } from "lucide-react";
+import { supabase } from "../../supabaseClient"; 
 import "./AdminDashboard.css";
 
 interface ClienteSimulacao {
@@ -15,21 +15,37 @@ interface ClienteSimulacao {
 }
 
 export default function AdminDashboard() {
+  const [session, setSession] = useState<any>(null);
+  const [authLoading, setAuthLoading] = useState(true);
   const [clientes, setClientes] = useState<ClienteSimulacao[]>([]);
   const [loading, setLoading] = useState(true);
 
+  // 1. Verificar autenticação antes de carregar o painel
   useEffect(() => {
-    // 1. Buscar os dados iniciais da tabela "simulações"
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+      setAuthLoading(false);
+    });
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  // 2. Buscar simulações apenas se o utilizador estiver autenticado
+  useEffect(() => {
+    if (!session) return;
+
     fetchSimulacoes();
 
-    // 2. Ouvir novas inserções em tempo real pelo Supabase Realtime
     const channel = supabase
-      .channel('public:simulações')
+      .channel('public:simulacoes')
       .on(
         'postgres_changes',
-        { event: 'INSERT', schema: 'public', table: 'simulações' },
+        { event: 'INSERT', schema: 'public', table: 'simulacoes' },
         (payload) => {
-          // Quando entra um novo cliente, adiciona-o imediatamente no topo da lista
           setClientes((prev) => [payload.new as ClienteSimulacao, ...prev]);
         }
       )
@@ -38,13 +54,13 @@ export default function AdminDashboard() {
     return () => {
       supabase.removeChannel(channel);
     };
-  }, []);
+  }, [session]);
 
   const fetchSimulacoes = async () => {
     try {
       setLoading(true);
       const { data, error } = await supabase
-        .from('simulações')
+        .from('simulacoes')
         .select('*')
         .order('created_at', { ascending: false });
 
@@ -59,6 +75,34 @@ export default function AdminDashboard() {
       setLoading(false);
     }
   };
+
+  // Se ainda estiver a validar a sessão, mostra um carregamento discreto
+  if (authLoading) {
+    return <div style={{ padding: "100px", textAlign: "center", color: "#fff", background: "#09090b" }}>A verificar credenciais de acesso...</div>;
+  }
+
+  // SE O UTILIZADOR NÃO ESTIVER LOGADO, BLOQUEIA E MOSTRA AVISO DE ACESSO RESTRITO
+  if (!session) {
+    return (
+      <section style={{ minHeight: "85vh", display: "flex", alignItems: "center", justifyContent: "center", background: "#09090b", color: "#fff", padding: "20px" }}>
+        <div style={{ background: "#18181b", border: "1px solid #27272a", padding: "40px", borderRadius: "16px", textAlign: "center", maxWidth: "420px", boxShadow: "0 10px 25px rgba(0,0,0,0.5)" }}>
+          <div style={{ color: "#dc2626", marginBottom: "15px", display: "inline-block", background: "#fee2e2", padding: "14px", borderRadius: "50%" }}>
+            <Lock size={32} />
+          </div>
+          <h2 style={{ marginBottom: "10px", fontSize: "1.5rem" }}>Acesso Restrito</h2>
+          <p style={{ color: "#a1a1aa", fontSize: "0.95rem", marginBottom: "24px", lineHeight: "1.5" }}>
+            Esta área de gestão é exclusiva para membros autenticados. Faça login na sua conta para visualizar o painel.
+          </p>
+          <a
+            href="/auth" 
+            style={{ display: "inline-block", background: "#d9ad27", color: "#000", fontWeight: "600", padding: "12px 24px", borderRadius: "8px", textDecoration: "none", transition: "opacity 0.2s" }}
+          >
+            Fazer Login / Área de Membros
+          </a>
+        </div>
+      </section>
+    );
+  }
 
   // Estatísticas do Dashboard baseadas nos dados reais
   const totalClientes = clientes.length;
