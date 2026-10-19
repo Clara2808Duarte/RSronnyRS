@@ -9,8 +9,7 @@ import Servicos from "../pages/Servicos";
 import ComoFunciona from "../pages/ComoFunciona";
 import Simulacao from "../pages/Simulacao";
 import Depoimentos from "../pages/Depoimentos";
-import Admin from "../pages/AdminDashboard";
-import Auth from "../pages/Auth";
+import Membros from "../pages/Membros";
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -51,8 +50,7 @@ export const router = createBrowserRouter([
       { path: "como-funciona", Component: ComoFunciona },
       { path: "simulacao", Component: Simulacao },
       { path: "depoimentos", Component: Depoimentos },
-      { path: "admin", Component: Admin },
-      { path: "membros", Component: Auth },
+      { path: "membros", Component: Membros },
     ],
   },
 ]);

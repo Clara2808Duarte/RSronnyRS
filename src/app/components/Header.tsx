@@ -80,9 +80,7 @@ export function Header() {
               <Link to="/membros" onClick={() => setIsMenuOpen(false)} style={{ color: '#d9ad27', padding: '10px 0', textDecoration: 'none', fontWeight: 600 }}>
                 🔒 Área de Membros
               </Link>
-              <Link to="/admin" onClick={() => setIsMenuOpen(false)} style={{ color: '#a7a7a7', padding: '10px 0', textDecoration: 'none', fontWeight: 600 }}>
-                🛡️ Painel Administrativo
-              </Link>
+             
             </div>
           </nav>
         )}
