@@ -90,15 +90,15 @@ export default function Simulacao() {
           email: form.email,
           tipo_servico: form.tipoServico,
           valor_credito: form.valorCredito,
-          valor_entrada: form.valorEntrada,
-          meio_comunicacao: form.meioComunicacao,
-          melhor_periodo: form.melhorPeriodo,
           status: "Pendente"
         }
       ]);
 
       if (error) {
         console.error("Erro ao guardar na base de dados:", error.message);
+        alert("Erro ao guardar no Supabase: " + error.message);
+      } else {
+        console.log("Simulação guardada com sucesso na base de dados!");
       }
     } catch (err) {
       console.error("Erro inesperado ao salvar:", err);
