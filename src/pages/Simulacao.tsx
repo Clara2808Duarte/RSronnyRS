@@ -82,9 +82,12 @@ export default function Simulacao() {
     setLoading(true);
 
     try {
-      // 1. Gravar os dados na tabela "simulacoes" do Supabase
-      const { error } = await supabase.from('simulacoes').insert([
+      // Geramos um ID numérico único baseado no tempo para compatibilidade com int8
+      const novoId = Date.now();
+
+      const { data, error } = await supabase.from('simulacoes').insert([
         {
+          id: novoId,
           nome: form.nome,
           telefone: form.telefone,
           email: form.email,
@@ -92,16 +95,17 @@ export default function Simulacao() {
           valor_credito: form.valorCredito,
           status: "Pendente"
         }
-      ]);
+      ]).select();
 
       if (error) {
-        console.error("Erro ao guardar na base de dados:", error.message);
+        console.error("Erro detalhado do Supabase:", error);
         alert("Erro ao guardar no Supabase: " + error.message);
       } else {
-        console.log("Simulação guardada com sucesso na base de dados!");
+        console.log("Simulação guardada com sucesso!", data);
       }
-    } catch (err) {
+    } catch (err: any) {
       console.error("Erro inesperado ao salvar:", err);
+      alert("Erro inesperado: " + (err.message || err));
     } finally {
       setLoading(false);
     }
