@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { supabase } from "../../supabaseClient";
-import { Users, TrendingUp, ShieldCheck, Mail, Phone, Calendar, ArrowUpRight, UserPlus, LogOut, Lock } from "lucide-react";
+import { Users, TrendingUp, ShieldCheck, Mail, Phone, Calendar, ArrowUpRight, UserPlus, LogOut, Lock, Calculator, FileText, CheckCircle2 } from "lucide-react";
 import "./Membros.css";
 
 interface ClienteSimulacao {
@@ -18,21 +18,30 @@ export default function Membros() {
   const [session, setSession] = useState<any>(null);
   const [authLoading, setAuthLoading] = useState(true);
   
-  // Controla se está no modo Login (true) ou Criar Conta (false)
+  // Login / Registo
   const [isLoginMode, setIsLoginMode] = useState(true);
-
-  // Estados para o formulário (Login / Registo)
   const [emailInput, setEmailInput] = useState("");
   const [senhaInput, setSenhaInput] = useState("");
   const [nomeInput, setNomeInput] = useState("");
   const [formMsg, setFormMsg] = useState({ texto: "", erro: false });
   const [submitting, setSubmitting] = useState(false);
 
-  // Estados do Dashboard
+  // Dashboard de Simulações
   const [clientes, setClientes] = useState<ClienteSimulacao[]>([]);
   const [loadingSimulacoes, setLoadingSimulacoes] = useState(true);
+  const [filtroServico, setFiltroServico] = useState("todos");
 
-  // Verificar Sessão
+  // Criar novo membro
+  const [novoEmail, setNovoEmail] = useState("");
+  const [novaSenha, setNovaSenha] = useState("");
+  const [novoNome, setNovoNome] = useState("");
+  const [msgCriacao, setMsgCriacao] = useState({ texto: "", erro: false });
+  const [criandoUser, setCriandoUser] = useState(false);
+
+  // Simulador rápido interno para vendedores
+  const [valorSimulado, setValorSimulado] = useState(50000);
+  const [prazoSimulado, setPrazoSimulado] = useState(48);
+
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
@@ -46,7 +55,6 @@ export default function Membros() {
     return () => subscription.unsubscribe();
   }, []);
 
-  // Buscar Simulações e Realtime
   useEffect(() => {
     if (!session) return;
 
@@ -85,7 +93,6 @@ export default function Membros() {
     }
   };
 
-  // Submeter formulário (Login ou Criar Conta)
   const handleSubmitAuth = async (e: React.FormEvent) => {
     e.preventDefault();
     setFormMsg({ texto: "", erro: false });
@@ -93,36 +100,49 @@ export default function Membros() {
 
     try {
       if (isLoginMode) {
-        // Tentar Login
         const { error } = await supabase.auth.signInWithPassword({
           email: emailInput,
           password: senhaInput,
         });
         if (error) throw error;
       } else {
-        // Criar Novo Utilizador
         const { error } = await supabase.auth.signUp({
           email: emailInput,
           password: senhaInput,
-          options: {
-            data: { nome_completo: nomeInput },
-          },
+          options: { data: { nome_completo: nomeInput } },
         });
         if (error) throw error;
-
         setFormMsg({ texto: "Conta criada com sucesso! Já podes entrar.", erro: false });
-        setIsLoginMode(true); // Alterna de volta para o login
+        setIsLoginMode(true);
         setSenhaInput("");
       }
     } catch (err: any) {
-      // Traduz ou exibe a mensagem de erro do Supabase de forma limpa
-      let mensagemErro = err.message;
-      if (mensagemErro.includes("Invalid login credentials")) {
-        mensagemErro = "E-mail ou palavra-passe incorretos. Se não tens conta, clica em 'Criar Conta'.";
-      }
-      setFormMsg({ texto: mensagemErro, erro: true });
+      setFormMsg({ texto: err.message || "Erro de autenticação.", erro: true });
     } finally {
       setSubmitting(false);
+    }
+  };
+
+  const handleCriarUtilizador = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setMsgCriacao({ texto: "", erro: false });
+    setCriandoUser(true);
+
+    try {
+      const { error } = await supabase.auth.signUp({
+        email: novoEmail,
+        password: novaSenha,
+        options: { data: { nome_completo: novoNome } },
+      });
+      if (error) throw error;
+      setMsgCriacao({ texto: `Membro ${novoEmail} criado com sucesso!`, erro: false });
+      setNovoEmail("");
+      setNovaSenha("");
+      setNovoNome("");
+    } catch (err: any) {
+      setMsgCriacao({ texto: err.message || "Erro ao criar membro.", erro: true });
+    } finally {
+      setCriandoUser(false);
     }
   };
 
@@ -131,25 +151,18 @@ export default function Membros() {
   };
 
   if (authLoading) {
-    return <div style={{ padding: "100px", textAlign: "center", color: "#fff", background: "#09090b" }}>A carregar...</div>;
+    return <div style={{ padding: "150px", textAlign: "center", color: "#fff", background: "#09090b" }}>A carregar...</div>;
   }
 
-  // ==========================================
-  // 1. ECRÃ DE AUTENTICAÇÃO (LOGIN / REGISTO)
-  // ==========================================
+  // 1. LOGIN
   if (!session) {
     return (
       <section className="membros-login-wrapper">
         <div className="membros-login-box">
-          
           <div className="membros-login-header">
-            <div className="membros-login-icon">
-              <Lock size={24} />
-            </div>
-            <h2>{isLoginMode ? "Área de Membros" : "Criar Novo Acesso"}</h2>
-            <p style={{ color: "#a1a1aa", fontSize: "0.9rem" }}>
-              {isLoginMode ? "Introduza as suas credenciais para aceder ao painel." : "Preencha os dados para registar um novo vendedor/membro."}
-            </p>
+            <div className="membros-login-icon"><Lock size={24} /></div>
+            <h2>Área de Membros</h2>
+            <p>Introduza as suas credenciais para aceder ao painel.</p>
           </div>
 
           {formMsg.texto && (
@@ -158,82 +171,50 @@ export default function Membros() {
             </div>
           )}
 
-          <form onSubmit={handleSubmitAuth} style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+          <form onSubmit={handleSubmitAuth} className="membros-form">
             {!isLoginMode && (
               <div className="membros-input-group">
                 <label className="membros-label">Nome Completo</label>
-                <input
-                  type="text"
-                  placeholder="Nome do vendedor"
-                  value={nomeInput}
-                  onChange={(e) => setNomeInput(e.target.value)}
-                  required
-                  className="membros-input"
-                />
+                <input type="text" placeholder="Nome" value={nomeInput} onChange={(e) => setNomeInput(e.target.value)} required className="membros-input" />
               </div>
             )}
-
             <div className="membros-input-group">
               <label className="membros-label">E-mail</label>
-              <input
-                type="email"
-                placeholder="seu@email.com"
-                value={emailInput}
-                onChange={(e) => setEmailInput(e.target.value)}
-                required
-                className="membros-input"
-              />
+              <input type="email" placeholder="seu@email.com" value={emailInput} onChange={(e) => setEmailInput(e.target.value)} required className="membros-input" />
             </div>
-
             <div className="membros-input-group">
               <label className="membros-label">Palavra-passe</label>
-              <input
-                type="password"
-                placeholder="Mínimo 6 caracteres"
-                value={senhaInput}
-                onChange={(e) => setSenhaInput(e.target.value)}
-                required
-                className="membros-input"
-              />
+              <input type="password" placeholder="••••••••" value={senhaInput} onChange={(e) => setSenhaInput(e.target.value)} required className="membros-input" />
             </div>
-
-            <button
-              type="submit"
-              disabled={submitting}
-              className="membros-submit-btn"
-              style={{ width: "100%", marginTop: "8px" }}
-            >
+            <button type="submit" disabled={submitting} className="membros-submit-btn">
               {submitting ? "A processar..." : isLoginMode ? "Entrar na Plataforma" : "Registar Novo Acesso"}
             </button>
           </form>
 
-          {/* Botão de alternância entre Login e Criar Conta */}
           <div style={{ textAlign: "center", marginTop: "20px" }}>
-            <button
-              type="button"
-              onClick={() => {
-                setIsLoginMode(!isLoginMode);
-                setFormMsg({ texto: "", erro: false });
-              }}
-              style={{ background: "none", border: "none", color: "#d9ad27", fontSize: "0.85rem", cursor: "pointer", textDecoration: "underline" }}
-            >
-              {isLoginMode ? "Ainda não tens conta? Clica aqui para criar" : "Já tens conta? Faz login aqui"}
+            <button type="button" onClick={() => setIsLoginMode(!isLoginMode)} className="membros-toggle-btn">
+              {isLoginMode ? "Ainda não tens conta? Clica aqui para criar" : "Já tens conta? Faz login"}
             </button>
           </div>
-
         </div>
       </section>
     );
   }
 
-  // Estatísticas para o Dashboard
+  // Filtrar clientes
+  const clientesFiltrados = clientes.filter(c => {
+    if (filtroServico === "todos") return true;
+    return c.tipo_servico?.toLowerCase().includes(filtroServico);
+  });
+
   const totalClientes = clientes.length;
   const totalConsorcios = clientes.filter(c => c.tipo_servico?.toLowerCase().includes("consórcio")).length;
   const totalFinanciamentos = clientes.filter(c => c.tipo_servico?.toLowerCase().includes("financiamento")).length;
 
-  // ==========================================
-  // 2. PAINEL DE GESTÃO (QUANDO LOGADO)
-  // ==========================================
+  // Calculadora rápida
+  const parcelaEstimada = (valorSimulado / prazoSimulado * 1.18).toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+
+  // 2. DASHBOARD COMPLETO
   return (
     <div className="membros-container">
       <div className="membros-wrapper">
@@ -241,13 +222,11 @@ export default function Membros() {
         {/* CABEÇALHO */}
         <div className="membros-header">
           <div>
-            <span className="membros-eyebrow">Área de Membros & Gestão</span>
-            <h1 className="membros-title">Painel de Controlo RS</h1>
+            <span className="membros-eyebrow">Área Restrita & Gestão RS</span>
+            <h1 className="membros-title">Painel de Controlo</h1>
           </div>
-          <div style={{ display: "flex", alignItems: "center", gap: "15px", flexWrap: "wrap" }}>
-            <span className="membros-user-badge">
-              👤 {session.user.email}
-            </span>
+          <div style={{ display: "flex", alignItems: "center", gap: "12px", flexWrap: "wrap" }}>
+            <span className="membros-user-badge">👤 {session.user.email}</span>
             <button onClick={handleLogout} className="membros-logout-btn">
               <LogOut size={16} /> Sair
             </button>
@@ -263,76 +242,115 @@ export default function Membros() {
               <h2 className="membros-metric-value">{totalClientes}</h2>
             </div>
           </div>
-
           <div className="membros-metric-card">
             <div className="membros-metric-icon membros-metric-icon--blue"><TrendingUp size={24} /></div>
             <div>
-              <span className="membros-metric-label">Interesse em Consórcio</span>
+              <span className="membros-metric-label">Consórcios</span>
               <h2 className="membros-metric-value">{totalConsorcios}</h2>
             </div>
           </div>
-
           <div className="membros-metric-card">
             <div className="membros-metric-icon membros-metric-icon--green"><ArrowUpRight size={24} /></div>
             <div>
-              <span className="membros-metric-label">Interesse em Financiamento</span>
+              <span className="membros-metric-label">Financiamentos</span>
               <h2 className="membros-metric-value">{totalFinanciamentos}</h2>
             </div>
           </div>
         </div>
 
-        {/* TABELA DE SIMULAÇÕES EM TEMPO REAL */}
-        <div className="membros-card">
+        {/* FERRAMENTAS EXTRAS (Calculadora Rápida para Vendedores) */}
+        <div className="membros-grid-two">
+          <div className="membros-card" style={{ marginBottom: 0 }}>
+            <div className="membros-card-title"><Calculator size={20} color="#d9ad27" /> Simulador Interno de Parcelas</div>
+            <p className="membros-card-desc">Faça cálculos rápidos para apresentar aos clientes durante o atendimento.</p>
+            
+            <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+              <div>
+                <label className="membros-label">Valor do Crédito (R$): {valorSimulado.toLocaleString("pt-BR")}</label>
+                <input type="range" min="10000" max="500000" step="5000" value={valorSimulado} onChange={(e) => setValorSimulado(Number(e.target.value))} style={{ width: "100%", accentColor: "#d9ad27" }} />
+              </div>
+              <div>
+                <label className="membros-label">Prazo (Meses): {prazoSimulado} meses</label>
+                <input type="range" min="12" max="240" step="12" value={prazoSimulado} onChange={(e) => setPrazoSimulado(Number(e.target.value))} style={{ width: "100%", accentColor: "#d9ad27" }} />
+              </div>
+              <div style={{ background: "#27272a", padding: "12px", borderRadius: "8px", display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "5px" }}>
+                <span style={{ fontSize: "0.85rem", color: "#a1a1aa" }}>Parcela Estimada:</span>
+                <strong style={{ color: "#4ade80", fontSize: "1.1rem" }}>{parcelaEstimada} / mês</strong>
+              </div>
+            </div>
+          </div>
+
+          {/* CRIAR NOVO MEMBRO */}
+          <div className="membros-card" style={{ marginBottom: 0 }}>
+            <div className="membros-card-title"><UserPlus size={20} color="#d9ad27" /> Registar Novo Vendedor / Membro</div>
+            <p className="membros-card-desc">Crie acessos para novos colaboradores gerirem os clientes.</p>
+
+            {msgCriacao.texto && (
+              <div className={msgCriacao.erro ? "membros-alert-error" : "membros-alert-success"} style={{ marginBottom: "10px" }}>
+                {msgCriacao.texto}
+              </div>
+            )}
+
+            <form onSubmit={handleCriarUtilizador} style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+              <input type="text" placeholder="Nome do Membro" value={novoNome} onChange={(e) => setNovoNome(e.target.value)} required className="membros-input" />
+              <input type="email" placeholder="E-mail de Acesso" value={novoEmail} onChange={(e) => setNovoEmail(e.target.value)} required className="membros-input" />
+              <input type="password" placeholder="Palavra-passe temporária" value={novaSenha} onChange={(e) => setNovaSenha(e.target.value)} required className="membros-input" />
+              <button type="submit" disabled={criandoUser} className="membros-submit-btn" style={{ marginTop: "4px" }}>
+                {criandoUser ? "A criar..." : "Criar Conta de Membro"}
+              </button>
+            </form>
+          </div>
+        </div>
+
+        {/* TABELA DE SIMULAÇÕES COM FILTROS */}
+        <div className="membros-card" style={{ marginTop: "30px" }}>
           <div className="membros-table-header">
-            <h3 className="membros-card-title" style={{ margin: 0 }}>Dashboard de Simulações em Tempo Real</h3>
-            <span className="membros-live-tag">● Atualizado em tempo real</span>
+            <div>
+              <h3 className="membros-card-title" style={{ margin: 0 }}>Simulações Recebidas</h3>
+              <span style={{ fontSize: "0.8rem", color: "#a1a1aa" }}>Atualizações automáticas em tempo real</span>
+            </div>
+            
+            {/* Filtros */}
+            <div style={{ display: "flex", gap: "8px" }}>
+              <button onClick={() => setFiltroServico("todos")} className={`membros-filter-btn ${filtroServico === "todos" ? "active" : ""}`}>Todos</button>
+              <button onClick={() => setFiltroServico("consórcio")} className={`membros-filter-btn ${filtroServico === "consórcio" ? "active" : ""}`}>Consórcio</button>
+              <button onClick={() => setFiltroServico("financiamento")} className={`membros-filter-btn ${filtroServico === "financiamento" ? "active" : ""}`}>Financiamento</button>
+            </div>
           </div>
 
           <div className="membros-table-wrapper">
             {loadingSimulacoes ? (
-              <p className="membros-empty-msg">A carregar dados da base de dados...</p>
-            ) : clientes.length === 0 ? (
-              <p className="membros-empty-msg">Ainda não existem simulações registadas.</p>
+              <p className="membros-empty-msg">A carregar dados...</p>
+            ) : clientesFiltrados.length === 0 ? (
+              <p className="membros-empty-msg">Nenhuma simulação encontrada com este filtro.</p>
             ) : (
               <table className="membros-table">
                 <thead>
                   <tr>
                     <th>Cliente</th>
                     <th>Contacto</th>
-                    <th>Serviço Desejado</th>
-                    <th>Valor do Crédito</th>
+                    <th>Serviço</th>
+                    <th>Valor</th>
                     <th>Data</th>
                     <th>Status</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {clientes.map((cliente) => {
-                    const dataFormatada = cliente.created_at 
-                      ? new Date(cliente.created_at).toLocaleString("pt-BR") 
-                      : "Data não disponível";
-
-                    const statusAtual = cliente.status || "Pendente";
-
-                    return (
-                      <tr key={cliente.id}>
-                        <td><strong>{cliente.nome}</strong></td>
-                        <td>
-                          <div className="membros-table-contact">
-                            <span>📧 {cliente.email}</span>
-                            <span>📱 {cliente.telefone}</span>
-                          </div>
-                        </td>
-                        <td>
-                          <span className="membros-table-tag">{cliente.tipo_servico}</span>
-                        </td>
-                        <td><strong>{cliente.valor_credito}</strong></td>
-                        <td style={{ color: "#a1a1aa", fontSize: "0.85rem" }}>{dataFormatada}</td>
-                        <td>
-                          <span className="membros-table-status">{statusAtual}</span>
-                        </td>
-                      </tr>
-                    );
-                  })}
+                  {clientesFiltrados.map((cli) => (
+                    <tr key={cli.id}>
+                      <td><strong>{cli.nome}</strong></td>
+                      <td>
+                        <div className="membros-table-contact">
+                          <span>📧 {cli.email}</span>
+                          <span>📱 {cli.telefone}</span>
+                        </div>
+                      </td>
+                      <td><span className="membros-table-tag">{cli.tipo_servico}</span></td>
+                      <td><strong>{cli.valor_credito}</strong></td>
+                      <td style={{ color: "#a1a1aa", fontSize: "0.85rem" }}>{cli.created_at ? new Date(cli.created_at).toLocaleString("pt-BR") : "-"}</td>
+                      <td><span className="membros-table-status">{cli.status || "Pendente"}</span></td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             )}
