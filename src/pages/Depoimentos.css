@@ -1,14 +1,19 @@
+/* =========================================================
+   PÁGINA DE DEPOIMENTOS — TEMA ESCURO SOFISTICADO (DARK & GOLD)
+========================================================= */
+
 .depoimentos {
   padding-top: calc(80px + 3rem);
-  padding-bottom: 6rem;
-  background: #F8F4EE;
-  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  padding-bottom: 7rem;
+  background: #0d1117;
+  border-top: 1px solid rgba(217, 173, 39, 0.2);
+  color: #F8F4EE;
 }
 
 @media (min-width: 1024px) {
   .depoimentos {
     padding-top: calc(80px + 4rem);
-    padding-bottom: 9rem;
+    padding-bottom: 10rem;
   }
 }
 
@@ -24,8 +29,19 @@
   }
 }
 
+/* CABEÇALHO */
 .depoimentos__header {
-  margin-bottom: 4rem;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2.5rem;
+  margin-bottom: 3.5rem;
+  align-items: flex-end;
+}
+
+@media (min-width: 1024px) {
+  .depoimentos__header {
+    grid-template-columns: 1.2fr 1fr;
+  }
 }
 
 .depoimentos__eyebrow {
@@ -38,7 +54,7 @@
 .depoimentos__eyebrow-line {
   height: 1px;
   width: 2.5rem;
-  background: #C9A030;
+  background: #d9ad27;
 }
 
 .depoimentos__eyebrow-text {
@@ -47,24 +63,133 @@
   font-weight: 600;
   letter-spacing: 0.15em;
   text-transform: uppercase;
-  color: #C9A030;
+  color: #d9ad27;
 }
 
 .depoimentos__title {
   font-family: 'Playfair Display', serif;
-  font-size: clamp(1.8rem, 4vw, 3rem);
+  font-size: clamp(2rem, 4vw, 3rem);
   font-weight: 700;
-  color: #1A1A1A;
-  line-height: 1.2;
+  color: #ffffff;
+  line-height: 1.15;
+  margin: 0;
 }
 
+.depoimentos__stats-box {
+  background: linear-gradient(135deg, rgba(22, 26, 32, 0.9) 0%, rgba(13, 17, 23, 0.95) 100%);
+  border: 1px solid rgba(217, 173, 39, 0.3);
+  border-radius: 14px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+}
+
+.depoimentos__stats-number {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.depoimentos__stats-stars {
+  display: flex;
+  gap: 4px;
+}
+
+.depoimentos__stats-text {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.85rem;
+  color: #a7a7a7;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* MÉTRICAS DE IMPACTO */
+.depoimentos__metrics-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  margin-bottom: 3rem;
+}
+
+@media (min-width: 768px) {
+  .depoimentos__metrics-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.depoimentos__metric-item {
+  background: rgba(18, 22, 28, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 12px;
+  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.depoimentos__metric-icon {
+  color: #d9ad27;
+  flex-shrink: 0;
+}
+
+.depoimentos__metric-item h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0 0 4px 0;
+}
+
+.depoimentos__metric-item p {
+  font-size: 0.825rem;
+  color: #a7a7a7;
+  margin: 0;
+}
+
+/* FILTROS */
+.depoimentos__filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 2.5rem;
+}
+
+.depoimentos__filter-btn {
+  padding: 8px 18px;
+  background: rgba(18, 22, 28, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 50px;
+  color: #a7a7a7;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.depoimentos__filter-btn:hover {
+  border-color: rgba(217, 173, 39, 0.5);
+  color: #ffffff;
+}
+
+.depoimentos__filter-btn--active {
+  background: #d9ad27;
+  border-color: #d9ad27;
+  color: #0b0b0b;
+  box-shadow: 0 4px 15px rgba(217, 173, 39, 0.25);
+}
+
+/* GRELHA DE CARDS */
 .depoimentos__grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 1.5rem;
+  gap: 24px;
 }
 
-@media (min-width: 640px) {
+@media (min-width: 768px) {
   .depoimentos__grid {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -76,20 +201,30 @@
   }
 }
 
+/* ESTILO DOS CARDS */
 .depoimentos__card {
-  padding: 2rem;
+  background: linear-gradient(135deg, rgba(22, 26, 32, 0.9) 0%, rgba(13, 17, 23, 0.95) 100%);
+  border: 1px solid rgba(217, 173, 39, 0.2);
+  border-top: 3px solid #d9ad27;
+  border-radius: 14px;
+  padding: 30px 24px;
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
-  background: #FFFFFF;
-  border: 1px solid rgba(0, 0, 0, 0.07);
-  border-top: 3px solid #C9A030;
-  transition: box-shadow 0.2s ease, transform 0.2s ease;
+  position: relative;
+  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .depoimentos__card:hover {
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.07);
-  transform: translateY(-2px);
+  transform: translateY(-5px);
+  border-color: rgba(217, 173, 39, 0.5);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+}
+
+.depoimentos__card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .depoimentos__stars {
@@ -97,30 +232,71 @@
   gap: 0.25rem;
 }
 
+.depoimentos__quote-icon {
+  color: rgba(217, 173, 39, 0.2);
+}
+
+.depoimentos__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  width: fit-content;
+  padding: 4px 10px;
+  background: rgba(217, 173, 39, 0.08);
+  border: 1px solid rgba(217, 173, 39, 0.2);
+  border-radius: 20px;
+  color: #E8D080;
+  font-size: 0.75rem;
+  font-weight: 600;
+  font-family: 'DM Sans', sans-serif;
+}
+
 .depoimentos__quote {
   font-family: 'Playfair Display', serif;
   font-style: italic;
-  font-size: 0.95rem;
-  color: #5A5550;
-  line-height: 1.8;
+  font-size: 0.925rem;
+  color: #c5c5c9;
+  line-height: 1.75;
   flex: 1;
+  margin: 0;
 }
 
 .depoimentos__author {
-  padding-top: 1rem;
-  border-top: 1px solid rgba(0, 0, 0, 0.07);
+  padding-top: 1.25rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.depoimentos__author-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(217, 173, 39, 0.15);
+  border: 1px solid rgba(217, 173, 39, 0.4);
+  color: #d9ad27;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
 }
 
 .depoimentos__author-name {
   font-family: 'DM Sans', sans-serif;
-  font-size: 0.875rem;
+  font-size: 0.9rem;
   font-weight: 700;
-  color: #1A1A1A;
+  color: #ffffff;
+  margin: 0;
 }
 
 .depoimentos__author-role {
   font-family: 'DM Sans', sans-serif;
   font-size: 0.75rem;
-  color: #9A9590;
-  margin-top: 0.25rem;
+  color: #a7a7a7;
+  margin-top: 2px;
+  margin-bottom: 0;
 }

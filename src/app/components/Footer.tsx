@@ -7,7 +7,8 @@ import {
   MessageCircle,
   Instagram,
   ExternalLink,
-  Star,
+  Lock,
+  ShieldAlert,
 } from "lucide-react";
 
 import { NAV_LINKS, WHATSAPP_NUMBER } from "../../data";
@@ -108,6 +109,28 @@ export function Footer() {
           </div>
 
 
+          {/* ÁREA DE MEMBROS E GESTÃO (NOVO) */}
+          <div className="footer__section">
+
+            <p className="footer__section-title">
+              Área do Cliente
+            </p>
+
+            <div className="footer__links">
+              <Link to="/membros" className="footer__link" style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                <Lock size={13} /> Área de Membros
+              </Link>
+              <Link to="/admin" className="footer__link" style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                <ShieldAlert size={13} /> Painel Administrativo
+              </Link>
+              <Link to="/simulacao" className="footer__link">
+                Fazer Simulação
+              </Link>
+            </div>
+
+          </div>
+
+
           {/* CONTATO + AVALIAÇÃO */}
           <div className="footer__section">
 
@@ -173,17 +196,6 @@ export function Footer() {
                 <ExternalLink size={14} />
                 Reclame Aqui
               </a>
-
-              {/* BOTÃO DE AVALIAÇÃO NO GOOGLE
-              <a
-                href="SEU_LINK_DO_GOOGLE_MEU_NEGOCIO"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="footer__google-review-btn"
-              >
-                <Star size={14} className="footer__star-icon" />
-                Avaliar no Google
-              </a> */}
 
             </div>
 

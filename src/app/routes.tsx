@@ -9,6 +9,8 @@ import Servicos from "../pages/Servicos";
 import ComoFunciona from "../pages/ComoFunciona";
 import Simulacao from "../pages/Simulacao";
 import Depoimentos from "../pages/Depoimentos";
+import Admin from "../pages/AdminDashboard";
+import Auth from "../pages/Auth";
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -20,7 +22,13 @@ function ScrollToTop() {
 
 function Root() {
   return (
-    <div style={{ fontFamily: "'DM Sans', sans-serif", background: "#F8F4EE", minHeight: "100vh" }}>
+    <div
+      style={{
+        fontFamily: "'DM Sans', sans-serif",
+        background: "#F8F4EE",
+        minHeight: "100vh",
+      }}
+    >
       <ScrollToTop />
       <Navbar />
       <main>
@@ -43,6 +51,8 @@ export const router = createBrowserRouter([
       { path: "como-funciona", Component: ComoFunciona },
       { path: "simulacao", Component: Simulacao },
       { path: "depoimentos", Component: Depoimentos },
+      { path: "admin", Component: Admin },
+      { path: "membros", Component: Auth },
     ],
   },
 ]);

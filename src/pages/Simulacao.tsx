@@ -1,20 +1,21 @@
 import { useState } from "react";
-
+import { Link } from "react-router";
 import {
   MessageCircle,
   Shield,
   Award,
   CheckCircle,
+  Clock,
+  Sparkles,
+  TrendingUp,
+  Percent,
+  CheckCircle2
 } from "lucide-react";
 
 import { WHATSAPP_NUMBER } from "../data";
+import { supabase } from "../../supabaseClient"; // <-- Importa o cliente do Supabase
 
 import "./Simulacao.css";
-
-
-// ======================================================
-// TIPO DO FORMULÁRIO
-// ======================================================
 
 interface FormData {
   nome: string;
@@ -27,120 +28,49 @@ interface FormData {
   melhorPeriodo: string;
 }
 
-
-// ======================================================
-// FORMULÁRIO INICIAL
-// ======================================================
-
 const INITIAL_FORM: FormData = {
   nome: "",
   telefone: "",
   email: "",
-  tipoServico: "",
+  tipoServico: "Consórcio",
   valorCredito: "",
   valorEntrada: "",
-  meioComunicacao: "",
-  melhorPeriodo: "",
+  meioComunicacao: "WhatsApp",
+  melhorPeriodo: "Manhã",
 };
-
-
-// ======================================================
-// FORMATAÇÃO DE MOEDA
-// ======================================================
 
 function formatCurrency(value: string): string {
   const numbers = value.replace(/\D/g, "");
-
-  if (!numbers) {
-    return "";
-  }
-
+  if (!numbers) return "";
   const amount = Number(numbers) / 100;
-
   return amount.toLocaleString("pt-BR", {
     style: "currency",
     currency: "BRL",
   });
 }
 
-
-// ======================================================
-// FORMATAÇÃO DE TELEFONE
-// ACEITA 10 OU 11 NÚMEROS
-// ======================================================
-
 function formatPhone(value: string): string {
-  // Remove tudo que não for número
   const numbers = value.replace(/\D/g, "").slice(0, 11);
-
-  // Apenas DDD
-  if (numbers.length <= 2) {
-    return numbers.length > 0
-      ? `(${numbers}`
-      : "";
-  }
-
-  // DDD + início do telefone
-  if (numbers.length <= 6) {
-    return `(${numbers.slice(0, 2)}) ${numbers.slice(2)}`;
-  }
-
-  // Telefone fixo - 10 números
-  // (19) 3456-7890
-  if (numbers.length <= 10) {
-    return `(${numbers.slice(0, 2)}) ${numbers.slice(2, 6)}-${numbers.slice(6)}`;
-  }
-
-  // Celular - 11 números
-  // (19) 99876-5432
+  if (numbers.length <= 2) return numbers.length > 0 ? `(${numbers}` : "";
+  if (numbers.length <= 6) return `(${numbers.slice(0, 2)})${numbers.slice(2)}`;
+  if (numbers.length <= 10) return `(${numbers.slice(0, 2)}) ${numbers.slice(2, 6)}-${numbers.slice(6)}`;
   return `(${numbers.slice(0, 2)}) ${numbers.slice(2, 7)}-${numbers.slice(7)}`;
 }
 
-
-// ======================================================
-// COMPONENTE
-// ======================================================
-
 export default function Simulacao() {
-
   const [form, setForm] = useState<FormData>(INITIAL_FORM);
-
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-
-  // ====================================================
-  // ATUALIZAÇÃO DOS CAMPOS
-  // ====================================================
-
-  const update = (
-    key: keyof FormData,
-    value: string
-  ) => {
-    setForm((f) => ({
-      ...f,
-      [key]: value,
-    }));
+  const update = (key: keyof FormData, value: string) => {
+    setForm((f) => ({ ...f, [key]: value }));
   };
 
-
-  // ====================================================
-  // REMOVE OS CARACTERES DO TELEFONE PARA VALIDAR
-  // ====================================================
-
-  const telefoneNumeros = form.telefone.replace(
-    /\D/g,
-    ""
-  );
-
-
-  // ====================================================
-  // VALIDAÇÃO DO FORMULÁRIO
-  // ====================================================
+  const telefoneNumeros = form.telefone.replace(/\D/g, "");
 
   const isValid =
     form.nome.trim().length > 1 &&
-    (telefoneNumeros.length === 10 ||
-      telefoneNumeros.length === 11) &&
+    (telefoneNumeros.length === 10 || telefoneNumeros.length === 11) &&
     form.email.includes("@") &&
     form.tipoServico !== "" &&
     form.valorCredito !== "" &&
@@ -148,642 +78,279 @@ export default function Simulacao() {
     form.meioComunicacao !== "" &&
     form.melhorPeriodo !== "";
 
+  const handleSend = async () => {
+    setLoading(true);
 
-  // ====================================================
-  // ENVIO PARA O WHATSAPP
-  // ====================================================
+    try {
+      // 1. Gravar os dados na tabela "simulações" do Supabase
+      const { error } = await supabase.from('simulações').insert([
+        {
+          nome: form.nome,
+          telefone: form.telefone,
+          email: form.email,
+          tipo_servico: form.tipoServico,
+          valor_credito: form.valorCredito,
+          valor_entrada: form.valorEntrada,
+          meio_comunicacao: form.meioComunicacao,
+          melhor_periodo: form.melhorPeriodo,
+          status: "Pendente"
+        }
+      ]);
 
-  const handleSend = () => {
+      if (error) {
+        console.error("Erro ao guardar na base de dados:", error.message);
+      }
+    } catch (err) {
+      console.error("Erro inesperado ao salvar:", err);
+    } finally {
+      setLoading(false);
+    }
 
+    // 2. Montar mensagem e abrir o WhatsApp (comportamento original)
     const lines = [
-
       `🏆 *Nova Simulação – RS Intermediações e Negócios*`,
-
       ``,
-
       `👤 *Nome:* ${form.nome}`,
-
       `📞 *Telefone:* ${form.telefone}`,
-
       `📧 *E-mail:* ${form.email}`,
-
       ``,
-
       `💼 *Tipo de Serviço:* ${form.tipoServico}`,
-
       `💰 *Valor do Crédito:* ${form.valorCredito}`,
-
       `📥 *Valor de Entrada:* ${form.valorEntrada}`,
-
       ``,
-
       `📲 *Meio de Contato:* ${form.meioComunicacao}`,
-
       `🕐 *Melhor Período:* ${form.melhorPeriodo}`,
-
       ``,
-
       `_Simulação enviada pelo site._`,
     ];
 
-
-    const msg = encodeURIComponent(
-      lines.join("\n")
-    );
-
-
-    window.open(
-      `https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`,
-      "_blank"
-    );
-
-
+    const msg = encodeURIComponent(lines.join("\n"));
+    window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`, "_blank");
     setSubmitted(true);
   };
 
-
-  // ====================================================
-  // TELA APÓS O ENVIO
-  // ====================================================
-
   if (submitted) {
-
     return (
-
       <section className="simulacao simulacao--success">
-
         <div className="simulacao__success">
-
           <div className="simulacao__success-icon">
-
-            <CheckCircle
-              size={32}
-              color="#C9A030"
-            />
-
+            <CheckCircle size={36} color="#d9ad27" />
           </div>
-
-
-          <h2 className="simulacao__success-title">
-            Simulação enviada!
-          </h2>
-
-
+          <h2 className="simulacao__success-title">Simulação enviada com sucesso!</h2>
           <p className="simulacao__success-text">
-
-            Você foi redirecionado ao nosso WhatsApp
-            com todas as informações. Nossa equipe
-            entrará em contato em breve.
-
+            Você foi redirecionado ao nosso WhatsApp com todas as informações preenchidas. Nossa equipe de especialistas já está a postos para analisar o seu perfil.
           </p>
-
-
           <button
             onClick={() => {
-
               setSubmitted(false);
-
               setForm(INITIAL_FORM);
-
             }}
             className="simulacao__success-btn"
           >
-
-            Fazer outra simulação
-
+            Fazer nova simulação
           </button>
-
         </div>
-
       </section>
-
     );
   }
 
-
-  // ====================================================
-  // FORMULÁRIO PRINCIPAL
-  // ====================================================
-
   return (
-
     <section className="simulacao">
-
       <div className="simulacao__container">
-
+        
         <div className="simulacao__layout">
 
-
-          {/* ============================================
-              COLUNA DE INFORMAÇÕES
-          ============================================ */}
-
+          {/* COLUNA DE INFORMAÇÕES */}
           <div className="simulacao__info">
-
-
             <div className="simulacao__eyebrow">
-
               <div className="simulacao__eyebrow-line" />
-
-              <span className="simulacao__eyebrow-text">
-
-                Simulação gratuita
-
-              </span>
-
+              <span className="simulacao__eyebrow-text">Simulação Inteligente</span>
             </div>
-
 
             <h1 className="simulacao__title">
-
-              Descubra o crédito ideal para você.
-
+              Descubra o crédito ideal para o seu objetivo.
             </h1>
 
-
             <p className="simulacao__subtitle">
-
-              Preencha o formulário e nossa equipe
-              analisará seu perfil e apresentará as
-              melhores opções do mercado — sem
-              compromisso e sem taxas ocultas.
-
+              Preencha os dados ao lado para gerarmos uma proposta preliminar sob medida. Trabalhamos com inteligência financeira para conectar você à melhor estratégia sem taxas ocultas.
             </p>
 
-
-            <div className="simulacao__guarantees">
-
-
-              {/* SEGURANÇA */}
-
-              <div className="simulacao__guarantee">
-
-                <span className="simulacao__guarantee-icon">
-
-                  <Shield size={16} />
-
-                </span>
-
-                <span className="simulacao__guarantee-text">
-
-                  Seus dados são 100% seguros
-
-                </span>
-
+            <div className="simulacao__summary-card">
+              <div className="simulacao__summary-header">
+                <Sparkles size={18} className="simulacao__summary-icon" />
+                <span>Resumo da sua Simulação</span>
               </div>
-
-
-              {/* CONSULTORIA */}
-
-              <div className="simulacao__guarantee">
-
-                <span className="simulacao__guarantee-icon">
-
-                  <Award size={16} />
-
-                </span>
-
-                <span className="simulacao__guarantee-text">
-
-                  Consultoria gratuita e sem compromisso
-
-                </span>
-
+              <div className="simulacao__summary-body">
+                <div className="simulacao__summary-row">
+                  <span>Modalidade:</span>
+                  <strong>{form.tipoServico || "Não selecionado"}</strong>
+                </div>
+                <div className="simulacao__summary-row">
+                  <span>Crédito Desejado:</span>
+                  <strong>{form.valorCredito || "R$ 0,00"}</strong>
+                </div>
+                <div className="simulacao__summary-row">
+                  <span>Valor de Entrada:</span>
+                  <strong>{form.valorEntrada || "R$ 0,00"}</strong>
+                </div>
               </div>
-
-
-              {/* WHATSAPP */}
-
-              <div className="simulacao__guarantee">
-
-                <span className="simulacao__guarantee-icon">
-
-                  <MessageCircle size={16} />
-
-                </span>
-
-                <span className="simulacao__guarantee-text">
-
-                  Resposta em até 2 horas úteis
-
-                </span>
-
-              </div>
-
-
             </div>
 
+            <div className="simulacao__guarantees">
+              <div className="simulacao__guarantee">
+                <span className="simulacao__guarantee-icon"><Shield size={18} /></span>
+                <span className="simulacao__guarantee-text">Seus dados estão 100% protegidos e seguros</span>
+              </div>
+              <div className="simulacao__guarantee">
+                <span className="simulacao__guarantee-icon"><Award size={18} /></span>
+                <span className="simulacao__guarantee-text">Consultoria inicial 100% gratuita</span>
+              </div>
+              <div className="simulacao__guarantee">
+                <span className="simulacao__guarantee-icon"><Clock size={18} /></span>
+                <span className="simulacao__guarantee-text">Retorno ágil em horário comercial</span>
+              </div>
+            </div>
           </div>
 
-
-          {/* ============================================
-              FORMULÁRIO
-          ============================================ */}
-
+          {/* FORMULÁRIO */}
           <div className="simulacao__form-wrapper">
-
+            <div className="simulacao__form-header">
+              <h3>Preencha os seus dados</h3>
+              <p>Campos marcados com * são obrigatórios</p>
+            </div>
 
             <div className="simulacao__grid">
 
-
-              {/* ========================================
-                  NOME
-              ======================================== */}
-
               <div className="simulacao__field simulacao__field--full">
-
-                <label className="simulacao__label">
-
-                  Nome completo *
-
-                </label>
-
-
+                <label className="simulacao__label">Nome completo *</label>
                 <input
                   type="text"
-                  placeholder="Seu nome completo"
+                  placeholder="Ex: Carlos Eduardo Silva"
                   value={form.nome}
-                  onChange={(e) =>
-                    update(
-                      "nome",
-                      e.target.value
-                    )
-                  }
+                  onChange={(e) => update("nome", e.target.value)}
                   className="simulacao__input"
                 />
-
               </div>
 
-
-              {/* ========================================
-                  TELEFONE
-              ======================================== */}
-
               <div className="simulacao__field">
-
-                <label className="simulacao__label">
-
-                  Telefone / WhatsApp *
-
-                </label>
-
-
+                <label className="simulacao__label">Telefone / WhatsApp *</label>
                 <input
                   type="tel"
                   inputMode="numeric"
                   placeholder="(11) 99999-9999"
                   value={form.telefone}
-                  onChange={(e) =>
-                    update(
-                      "telefone",
-                      formatPhone(
-                        e.target.value
-                      )
-                    )
-                  }
+                  onChange={(e) => update("telefone", formatPhone(e.target.value))}
                   className="simulacao__input"
                 />
-
               </div>
 
-
-              {/* ========================================
-                  E-MAIL
-              ======================================== */}
-
               <div className="simulacao__field">
-
-                <label className="simulacao__label">
-
-                  E-mail *
-
-                </label>
-
-
+                <label className="simulacao__label">E-mail *</label>
                 <input
                   type="email"
                   placeholder="seu@email.com"
                   value={form.email}
-                  onChange={(e) =>
-                    update(
-                      "email",
-                      e.target.value
-                    )
-                  }
+                  onChange={(e) => update("email", e.target.value)}
                   className="simulacao__input"
                 />
-
               </div>
-
-
-              {/* ========================================
-                  TIPO DE SERVIÇO
-              ======================================== */}
 
               <div className="simulacao__field simulacao__field--full">
-
-                <label className="simulacao__label">
-
-                  Tipo de serviço *
-
-                </label>
-
-
+                <label className="simulacao__label">Tipo de serviço desejado *</label>
                 <div className="simulacao__toggle-group">
-
-
-                  {/* CONSÓRCIO */}
-
-                  <button
-                    type="button"
-                    onClick={() =>
-                      update(
-                        "tipoServico",
-                        "Consórcio"
-                      )
-                    }
-                    className={`simulacao__toggle ${
-                      form.tipoServico === "Consórcio"
-                        ? "simulacao__toggle--active"
-                        : ""
-                    }`}
-                  >
-
-                    Consórcio
-
-                  </button>
-
-
-                  {/* FINANCIAMENTO */}
-
-                  <button
-                    type="button"
-                    onClick={() =>
-                      update(
-                        "tipoServico",
-                        "Financiamento"
-                      )
-                    }
-                    className={`simulacao__toggle ${
-                      form.tipoServico === "Financiamento"
-                        ? "simulacao__toggle--active"
-                        : ""
-                    }`}
-                  >
-
-                    Financiamento
-
-                  </button>
-
-
-                  {/* VER O MAIS VIÁVEL */}
-
-                  <button
-                    type="button"
-                    onClick={() =>
-                      update(
-                        "tipoServico",
-                        "Ver o mais viável"
-                      )
-                    }
-                    className={`simulacao__toggle ${
-                      form.tipoServico === "Ver o mais viável"
-                        ? "simulacao__toggle--active"
-                        : ""
-                    }`}
-                  >
-
-                    Ver o mais viável
-
-                  </button>
-
-
+                  {["Consórcio", "Financiamento", "Ver o mais viável"].map((opt) => (
+                    <button
+                      key={opt}
+                      type="button"
+                      onClick={() => update("tipoServico", opt)}
+                      className={`simulacao__toggle ${
+                        form.tipoServico === opt ? "simulacao__toggle--active" : ""
+                      }`}
+                    >
+                      {opt}
+                    </button>
+                  ))}
                 </div>
-
               </div>
 
-
-              {/* ========================================
-                  VALOR DO CRÉDITO
-              ======================================== */}
-
               <div className="simulacao__field">
-
-                <label className="simulacao__label">
-
-                  Valor do crédito desejado *
-
-                </label>
-
-
+                <label className="simulacao__label">Valor do crédito desejado *</label>
                 <input
                   type="text"
                   inputMode="numeric"
                   placeholder="R$ 0,00"
                   value={form.valorCredito}
-                  onChange={(e) =>
-                    update(
-                      "valorCredito",
-                      formatCurrency(
-                        e.target.value
-                      )
-                    )
-                  }
+                  onChange={(e) => update("valorCredito", formatCurrency(e.target.value))}
                   className="simulacao__input"
                 />
-
               </div>
 
-
-              {/* ========================================
-                  VALOR DE ENTRADA
-              ======================================== */}
-
               <div className="simulacao__field">
-
-                <label className="simulacao__label">
-
-                  Valor de entrada *
-
-                </label>
-
-
+                <label className="simulacao__label">Valor de entrada disponível *</label>
                 <input
                   type="text"
                   inputMode="numeric"
                   placeholder="R$ 0,00"
                   value={form.valorEntrada}
-                  onChange={(e) =>
-                    update(
-                      "valorEntrada",
-                      formatCurrency(
-                        e.target.value
-                      )
-                    )
-                  }
+                  onChange={(e) => update("valorEntrada", formatCurrency(e.target.value))}
                   className="simulacao__input"
                 />
-
               </div>
 
-
-              {/* ========================================
-                  MEIO DE CONTATO
-              ======================================== */}
-
               <div className="simulacao__field">
-
-                <label className="simulacao__label">
-
-                  Melhor meio de contato *
-
-                </label>
-
-
+                <label className="simulacao__label">Melhor canal de contato *</label>
                 <div className="simulacao__toggle-group">
-
-
-                  {/* WHATSAPP */}
-
-                  <button
-                    type="button"
-                    onClick={() =>
-                      update(
-                        "meioComunicacao",
-                        "WhatsApp"
-                      )
-                    }
-                    className={`simulacao__toggle ${
-                      form.meioComunicacao === "WhatsApp"
-                        ? "simulacao__toggle--active"
-                        : ""
-                    }`}
-                  >
-
-                    WhatsApp
-
-                  </button>
-
-
-                  {/* LIGAÇÃO */}
-
-                  <button
-                    type="button"
-                    onClick={() =>
-                      update(
-                        "meioComunicacao",
-                        "Ligação"
-                      )
-                    }
-                    className={`simulacao__toggle ${
-                      form.meioComunicacao === "Ligação"
-                        ? "simulacao__toggle--active"
-                        : ""
-                    }`}
-                  >
-
-                    Ligação
-
-                  </button>
-
-
+                  {["WhatsApp", "Ligação"].map((meio) => (
+                    <button
+                      key={meio}
+                      type="button"
+                      onClick={() => update("meioComunicacao", meio)}
+                      className={`simulacao__toggle ${
+                        form.meioComunicacao === meio ? "simulacao__toggle--active" : ""
+                      }`}
+                    >
+                      {meio}
+                    </button>
+                  ))}
                 </div>
-
               </div>
 
-
-              {/* ========================================
-                  MELHOR PERÍODO
-              ======================================== */}
-
               <div className="simulacao__field">
-
-                <label className="simulacao__label">
-
-                  Melhor período para contato *
-
-                </label>
-
-
+                <label className="simulacao__label">Melhor período para contato *</label>
                 <select
                   value={form.melhorPeriodo}
-                  onChange={(e) =>
-                    update(
-                      "melhorPeriodo",
-                      e.target.value
-                    )
-                  }
+                  onChange={(e) => update("melhorPeriodo", e.target.value)}
                   className="simulacao__select"
                 >
-
-                  <option
-                    value=""
-                    disabled
-                  >
-                    Selecione
-                  </option>
-
-
-                  <option value="Manhã">
-                    Manhã
-                  </option>
-
-
-                  <option value="Tarde">
-                    Tarde
-                  </option>
-
-
-                  <option value="Noite">
-                    Noite
-                  </option>
-
+                  <option value="" disabled>Selecione</option>
+                  <option value="Manhã">Manhã</option>
+                  <option value="Tarde">Tarde</option>
+                  <option value="Noite">Noite</option>
                 </select>
-
               </div>
-
 
             </div>
 
-
-            {/* ==========================================
-                BOTÃO DE ENVIO
-            ========================================== */}
-
             <button
               onClick={handleSend}
-              disabled={!isValid}
+              disabled={!isValid || loading}
               className={`simulacao__submit ${
-                isValid
-                  ? "simulacao__submit--active"
-                  : "simulacao__submit--disabled"
+                isValid && !loading ? "simulacao__submit--active" : "simulacao__submit--disabled"
               }`}
             >
-
-              <MessageCircle size={18} />
-
-              Enviar pelo WhatsApp
-
+              <MessageCircle size={20} />
+              {loading ? "A enviar..." : "Enviar Simulação pelo WhatsApp"}
             </button>
 
-
-            {/* AVISO */}
-
             <p className="simulacao__disclaimer">
-
-              Ao enviar, você concorda em ser
-              contatado pela nossa equipe.
-
+              Ao enviar, você concorda em iniciar o atendimento automatizado via WhatsApp com a nossa equipe comercial.
             </p>
-
 
           </div>
 
         </div>
 
       </div>
-
     </section>
-
   );
 }
