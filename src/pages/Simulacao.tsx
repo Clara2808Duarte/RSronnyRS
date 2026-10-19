@@ -82,9 +82,9 @@ export default function Simulacao() {
     setLoading(true);
 
     try {
-      // Geramos um ID numérico único baseado no tempo para compatibilidade com int8
       const novoId = Date.now();
 
+      // Enviamos apenas as colunas que existem na base de dados
       const { data, error } = await supabase.from('simulacoes').insert([
         {
           id: novoId,
@@ -92,8 +92,7 @@ export default function Simulacao() {
           telefone: form.telefone,
           email: form.email,
           tipo_servico: form.tipoServico,
-          valor_credito: form.valorCredito,
-          status: "Pendente"
+          valor_credito: form.valorCredito
         }
       ]).select();
 
