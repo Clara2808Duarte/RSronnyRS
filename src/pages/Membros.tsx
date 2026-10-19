@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { supabase } from "../../supabaseClient";
-import { Users, TrendingUp, ShieldCheck, Mail, Phone, Calendar, ArrowUpRight, UserPlus, LogOut, Lock, Calculator, FileText, CheckCircle2 } from "lucide-react";
+import { Users, TrendingUp, ShieldCheck, Mail, Phone, Calendar, ArrowUpRight, UserPlus, LogOut, Lock, FileText, CheckCircle2, Headphones, HelpCircle, ExternalLink } from "lucide-react";
 import "./Membros.css";
 
 interface ClienteSimulacao {
@@ -37,10 +37,6 @@ export default function Membros() {
   const [novoNome, setNovoNome] = useState("");
   const [msgCriacao, setMsgCriacao] = useState({ texto: "", erro: false });
   const [criandoUser, setCriandoUser] = useState(false);
-
-  // Simulador rápido interno para vendedores
-  const [valorSimulado, setValorSimulado] = useState(50000);
-  const [prazoSimulado, setPrazoSimulado] = useState(48);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -211,9 +207,6 @@ export default function Membros() {
   const totalConsorcios = clientes.filter(c => c.tipo_servico?.toLowerCase().includes("consórcio")).length;
   const totalFinanciamentos = clientes.filter(c => c.tipo_servico?.toLowerCase().includes("financiamento")).length;
 
-  // Calculadora rápida
-  const parcelaEstimada = (valorSimulado / prazoSimulado * 1.18).toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
-
   // 2. DASHBOARD COMPLETO
   return (
     <div className="membros-container">
@@ -258,24 +251,24 @@ export default function Membros() {
           </div>
         </div>
 
-        {/* FERRAMENTAS EXTRAS (Calculadora Rápida para Vendedores) */}
+        {/* SECÇÃO SUBSTITUTA: SUPORTE COMERCIAL & DIRETRIZES */}
         <div className="membros-grid-two">
           <div className="membros-card" style={{ marginBottom: 0 }}>
-            <div className="membros-card-title"><Calculator size={20} color="#d9ad27" /> Simulador Interno de Parcelas</div>
-            <p className="membros-card-desc">Faça cálculos rápidos para apresentar aos clientes durante o atendimento.</p>
+            <div className="membros-card-title"><Headphones size={20} color="#d9ad27" /> Suporte & Orientações Comerciais</div>
+            <p className="membros-card-desc">Boas práticas para o atendimento rápido aos leads de simulação.</p>
             
-            <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-              <div>
-                <label className="membros-label">Valor do Crédito (R$): {valorSimulado.toLocaleString("pt-BR")}</label>
-                <input type="range" min="10000" max="500000" step="5000" value={valorSimulado} onChange={(e) => setValorSimulado(Number(e.target.value))} style={{ width: "100%", accentColor: "#d9ad27" }} />
+            <div style={{ display: "flex", flexDirection: "column", gap: "12px", fontSize: "0.9rem", color: "#d4d4d8" }}>
+              <div style={{ display: "flex", alignItems: "flex-start", gap: "8px" }}>
+                <CheckCircle2 size={18} color="#4ade80" style={{ flexShrink: 0, marginTop: "2px" }} />
+                <span>Contacte o lead em até <strong>15 minutos</strong> após a submissão da simulação.</span>
               </div>
-              <div>
-                <label className="membros-label">Prazo (Meses): {prazoSimulado} meses</label>
-                <input type="range" min="12" max="240" step="12" value={prazoSimulado} onChange={(e) => setPrazoSimulado(Number(e.target.value))} style={{ width: "100%", accentColor: "#d9ad27" }} />
+              <div style={{ display: "flex", alignItems: "flex-start", gap: "8px" }}>
+                <CheckCircle2 size={18} color="#4ade80" style={{ flexShrink: 0, marginTop: "2px" }} />
+                <span>Confirme o valor do crédito pretendido e o objetivo (imóvel, veículo ou investimento).</span>
               </div>
-              <div style={{ background: "#27272a", padding: "12px", borderRadius: "8px", display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "5px" }}>
-                <span style={{ fontSize: "0.85rem", color: "#a1a1aa" }}>Parcela Estimada:</span>
-                <strong style={{ color: "#4ade80", fontSize: "1.1rem" }}>{parcelaEstimada} / mês</strong>
+              <div style={{ display: "flex", alignItems: "flex-start", gap: "8px" }}>
+                <CheckCircle2 size={18} color="#4ade80" style={{ flexShrink: 0, marginTop: "2px" }} />
+                <span>Atualize o status do cliente diretamente com a equipa de coordenação.</span>
               </div>
             </div>
           </div>
