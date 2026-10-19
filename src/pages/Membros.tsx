@@ -56,12 +56,14 @@ export default function Membros() {
 
     fetchSimulacoes();
 
+    // Subscrição em tempo real para novas simulações
     const channel = supabase
       .channel('public:simulacoes')
       .on(
         'postgres_changes',
         { event: 'INSERT', schema: 'public', table: 'simulacoes' },
         (payload) => {
+          console.new("Nova simulação recebida em tempo real:", payload.new);
           setClientes((prev) => [payload.new as ClienteSimulacao, ...prev]);
         }
       )
@@ -80,10 +82,14 @@ export default function Membros() {
         .select('*')
         .order('created_at', { ascending: false });
 
-      if (error) console.error("Erro ao buscar simulações:", error);
-      else if (data) setClientes(data);
+      if (error) {
+        console.error("Erro do Supabase ao buscar simulações:", error.message, error.details);
+      } else if (data) {
+        console.log("Simulações carregadas com sucesso:", data);
+        setClientes(data);
+      }
     } catch (err) {
-      console.error("Erro inesperado:", err);
+      console.error("Erro inesperado ao carregar simulações:", err);
     } finally {
       setLoadingSimulacoes(false);
     }
@@ -197,15 +203,21 @@ export default function Membros() {
     );
   }
 
-  // Filtrar clientes
+  // Normalizador de texto para ignorar acentos e maiúsculas nos filtros
+  const normalizarTexto = (texto: string) => {
+    return (texto || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+  };
+
+  // Filtrar clientes com segurança contra acentos/maiúsculas
   const clientesFiltrados = clientes.filter(c => {
     if (filtroServico === "todos") return true;
-    return c.tipo_servico?.toLowerCase().includes(filtroServico);
+    const servicoNormalizado = normalizarTexto(c.tipo_servico);
+    return servicoNormalizado.includes(normalizarTexto(filtroServico));
   });
 
   const totalClientes = clientes.length;
-  const totalConsorcios = clientes.filter(c => c.tipo_servico?.toLowerCase().includes("consórcio")).length;
-  const totalFinanciamentos = clientes.filter(c => c.tipo_servico?.toLowerCase().includes("financiamento")).length;
+  const totalConsorcios = clientes.filter(c => normalizarTexto(c.tipo_servico).includes("consorcio")).length;
+  const totalFinanciamentos = clientes.filter(c => normalizarTexto(c.tipo_servico).includes("financiamento")).length;
 
   // 2. DASHBOARD COMPLETO
   return (
@@ -251,7 +263,7 @@ export default function Membros() {
           </div>
         </div>
 
-        {/* SECÇÃO SUBSTITUTA: SUPORTE COMERCIAL & DIRETRIZES */}
+        {/* SECÇÃO: SUPORTE COMERCIAL & DIRETRIZES */}
         <div className="membros-grid-two">
           <div className="membros-card" style={{ marginBottom: 0 }}>
             <div className="membros-card-title"><Headphones size={20} color="#d9ad27" /> Suporte & Orientações Comerciais</div>
