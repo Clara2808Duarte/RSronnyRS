@@ -16,11 +16,9 @@ import {
   Award,
   Headset,
   FileCheck,
-  Percent,
-  MessageCircle
+  Percent
 } from "lucide-react";
 
-import { WHATSAPP_NUMBER } from "../data";
 import "./Servicos.css";
 
 const SERVICES = [
@@ -152,14 +150,6 @@ export default function Servicos() {
 
   const currentService = SERVICES[active];
 
-  // Função para abrir o WhatsApp com mensagem personalizada para o serviço selecionado
-  const handleWhatsAppClick = () => {
-    const text = encodeURIComponent(
-      `Olá! Estava a ver o serviço de *${currentService.title}* no site da RS Intermediações e gostaria de falar com um especialista.`
-    );
-    window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${text}`, "_blank");
-  };
-
   return (
     <section className="servicos">
       <div className="servicos__container">
@@ -214,12 +204,9 @@ export default function Servicos() {
               </div>
 
               <div className="servicos__actions">
-                <Link to="/simulacao" state={{ category: currentService.id }} className="servicos__cta">
+                <Link to="/simulacao" state={{ category: currentService.id }} className="servicos__cta" style={{ width: "100%", justifyContent: "center" }}>
                   Simular {currentService.title} <ArrowRight size={18} />
                 </Link>
-                <button type="button" onClick={handleWhatsAppClick} className="servicos__cta-secondary" style={{ display: "inline-flex", alignItems: "center", gap: "8px", cursor: "pointer" }}>
-                  <MessageCircle size={18} color="#25D366" /> Falar com especialista
-                </button>
               </div>
             </div>
 
