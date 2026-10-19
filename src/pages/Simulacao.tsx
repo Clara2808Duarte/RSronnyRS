@@ -106,7 +106,7 @@ export default function Simulacao() {
       setLoading(false);
     }
 
-    // 2. Montar mensagem e abrir o WhatsApp com emojis seguros (Unicode)
+    // 2. Montar mensagem e abrir o WhatsApp com emojis seguros em Unicode
     const lines = [
       `\uD83C\uDFC6 *Nova Simulação – RS Intermediações e Negócios*`,
       ``,
