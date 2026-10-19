@@ -16,8 +16,11 @@ import {
   Award,
   Headset,
   FileCheck,
-  Percent
+  Percent,
+  MessageCircle
 } from "lucide-react";
+
+import { WHATSAPP_NUMBER } from "../data";
 import "./Servicos.css";
 
 const SERVICES = [
@@ -113,7 +116,6 @@ const SERVICES = [
   },
 ];
 
-// Substituição do Passo a Passo pelos Diferenciais da RS Intermediações
 const DIFFERENTIALS = [
   {
     icon: <Award size={28} />,
@@ -149,6 +151,14 @@ export default function Servicos() {
   const [active, setActive] = useState(0);
 
   const currentService = SERVICES[active];
+
+  // Função para abrir o WhatsApp com mensagem personalizada para o serviço selecionado
+  const handleWhatsAppClick = () => {
+    const text = encodeURIComponent(
+      `Olá! Estava a ver o serviço de *${currentService.title}* no site da RS Intermediações e gostaria de falar com um especialista.`
+    );
+    window.open(`https://wa.me/${`19990013809`}?text=${text}`, "_blank");
+  };
 
   return (
     <section className="servicos">
@@ -207,9 +217,9 @@ export default function Servicos() {
                 <Link to="/simulacao" state={{ category: currentService.id }} className="servicos__cta">
                   Simular {currentService.title} <ArrowRight size={18} />
                 </Link>
-                <Link to="/contato" className="servicos__cta-secondary">
-                  Falar com especialista
-                </Link>
+                <button onClick={handleWhatsAppClick} className="servicos__cta-secondary" style={{ display: "inline-flex", alignItems: "center", gap: "8px", cursor: "pointer" }}>
+                  <MessageCircle size={18} color="#25D366" /> Falar com especialista
+                </button>
               </div>
             </div>
 
@@ -234,9 +244,7 @@ export default function Servicos() {
           </div>
         </div>
 
-        {/* =====================================================
-            SEÇÃO: DIFERENCIAIS RS INTERMEDIAÇÕES
-        ===================================================== */}
+        {/* SEÇÃO: DIFERENCIAIS RS INTERMEDIAÇÕES */}
         <div className="servicos__process-section">
           <div className="servicos__process-header">
             <span className="servicos__process-eyebrow">Por que nos escolher</span>
@@ -255,9 +263,7 @@ export default function Servicos() {
           </div>
         </div>
 
-        {/* =====================================================
-            SEÇÃO: TABELA COMPARATIVA (CONSÓRCIO X FINANCIAMENTO)
-        ===================================================== */}
+        {/* SEÇÃO: TABELA COMPARATIVA (CONSÓRCIO X FINANCIAMENTO) */}
         <div className="servicos__compare-section">
           <div className="servicos__compare-header">
             <div className="servicos__eyebrow">
