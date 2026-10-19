@@ -44,9 +44,7 @@ export function Header() {
             <Link to="/membros" className="header-link-member" style={{ display: 'inline-flex', alignItems: 'center', gap: '5px', color: '#d9ad27', fontWeight: 600, textDecoration: 'none', marginLeft: '10px' }}>
               <Lock size={14} /> Membros
             </Link>
-            <Link to="/admin" className="header-link-admin" style={{ display: 'inline-flex', alignItems: 'center', gap: '5px', color: '#a7a7a7', fontWeight: 600, textDecoration: 'none', marginLeft: '10px' }}>
-              <ShieldAlert size={14} /> Admin
-            </Link>
+          
           </nav>
 
           <button
