@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 import { 
   Home, 
   Car, 
@@ -157,7 +157,7 @@ export default function Servicos() {
     const text = encodeURIComponent(
       `Olá! Estava a ver o serviço de *${currentService.title}* no site da RS Intermediações e gostaria de falar com um especialista.`
     );
-    window.open(`https://wa.me/${`19990013809`}?text=${text}`, "_blank");
+    window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${text}`, "_blank");
   };
 
   return (
@@ -217,7 +217,7 @@ export default function Servicos() {
                 <Link to="/simulacao" state={{ category: currentService.id }} className="servicos__cta">
                   Simular {currentService.title} <ArrowRight size={18} />
                 </Link>
-                <button onClick={handleWhatsAppClick} className="servicos__cta-secondary" style={{ display: "inline-flex", alignItems: "center", gap: "8px", cursor: "pointer" }}>
+                <button type="button" onClick={handleWhatsAppClick} className="servicos__cta-secondary" style={{ display: "inline-flex", alignItems: "center", gap: "8px", cursor: "pointer" }}>
                   <MessageCircle size={18} color="#25D366" /> Falar com especialista
                 </button>
               </div>
